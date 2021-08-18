@@ -3,6 +3,21 @@
  */
 class Parser {
 
+
+	static get DOTS() { return ':' }
+
+	static get COMMA() { return ',' }
+
+	static get SEMICOLON() { return ';' }
+
+	static get BEGIN_BLOCK() { return '{' }
+
+	static get END_BLOCK() { return '}' }
+
+	static get REGEX_COMMENTS() { return /\/\*(\r|\n|.)*\*\//g }
+
+	static get REGEX_BRACKETS() { return /\(([^)]+)\)/ }
+
 	/**
 	 * get blocks of queries and rules
 	 * @param string css
@@ -10,10 +25,10 @@ class Parser {
 	 */
 	parseCSS(css) {
 		let blocks = []
-		let rules = this.remove(css).split('}')
+		let rules = this.remove(css).split(Parser.END_BLOCK)
 		rules.pop()
 		rules.map(block => {
-			let [query, rule] = block.split('{')
+			let [query, rule] = block.split(Parser.BEGIN_BLOCK)
 			blocks.push({
 				query: query.trim(),
 				selectors: query.trim().split(',').map(s => s.trim()),
@@ -38,7 +53,7 @@ class Parser {
 			.filter(d => d != "")
 			.map(decl => {
 				if (decl.includes('('))
-					params.push(regex.exec(decl)[1])
+					params.push(Parser.REGEX_BRACKETS.exec(decl)[1])
 				return decl.trim()
 			}).join('')
 
@@ -66,7 +81,7 @@ class Parser {
 	 * @return string css
 	 */
 	remove(css) {
-		return css.replace(/\/\*(\r|\n|.)*\*\//g, "")
+		return css.replace(this.REGEX_COMMENTS, "")
 	}
 }
 
