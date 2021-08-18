@@ -1,3 +1,6 @@
+/**
+ * ICSS Staments Interface
+ */
 class ICSSStatments {
 	static get IMPORT() { return 'import' }
 	static get MEDIA() { return 'media' }
@@ -5,51 +8,41 @@ class ICSSStatments {
 	static get FONT_FACE() { return 'font-face' }
 }
 
+/**
+ * ICSS Symbols Interface
+ */
 class ICSS {
 	static get EMPTY() { return '' }
-
 	static get DOTS() { return ':' }
-
 	static get COMMA() { return ',' }
-
 	static get SEMICOLON() { return ';' }
-
 	static get BREAK_LINE() { return '\n' }
-
 	static get BEGIN_BLOCK() { return '{' }
-
 	static get END_BLOCK() { return '}' }
-
+	static get BEGIN_BRACKET() { return '(' }
 	static get END_BRACKET() { return ')' }
-
 	static get DOUBLE_END_BRACKETS() { return '}}' }
-
 	static get END_BRACKET_RULE() { return ');' }
-
 	static get DATA_URI() { return 'data:' }
-
 	static get DATA_URI_KEYS() { return {':': '=', ';': '&'} }
-
 	static get DATA_URI_VALUES() { return {'=': ':', '&': ';'} }
-
 	static get REGEX_COMMENTS() { return /\/\*(\r|\n|.)*\*\//g }
-
 	static get REGEX_BRACKETS() { return /\(([^)]+)\)/ }
-	
 	static REGEX_REPLACE(str, obj) {
-	  let re = new RegExp(Object.keys(obj).join('|'), 'g')
-	  return str.replace(re, i => obj[i])
+		let re = new RegExp(Object.keys(obj).join('|'), 'g')
+		return str.replace(re, i => obj[i])
 	}
 }
+
 
 /**
  * ParserCSS Class
  */
 class Parser {
-
+	
 	/**
 	 * Initializate Parser
-	 * @param string css (optional)
+	 * @param string css
 	 * @return object Parser
 	 */
 	constructor(css) {
@@ -59,6 +52,7 @@ class Parser {
 
 		delete this.rules
 		delete this.query
+		delete this.blocksRule
 		delete this.blockRules
 		return this
 	}
@@ -109,6 +103,10 @@ class Parser {
 	}
 
 
+	/**
+	 * Parse CSS Statments
+	 * @return string css
+	 */
 	parseCSSStatments() {
 		this.statments = {imports:[], medias:[], keyframes:[], font_faces:[]}
 		this.css.split('@').map(blocklines => {
@@ -120,7 +118,6 @@ class Parser {
 				let statment = `${blockline[0].replace('-', '_')}s`
 
 				if (blockline[0] == ICSSStatments.IMPORT) {
-					console.log(this.css)
 					this.css = this.css.replace(`@${blocklines.split(ICSS.SEMICOLON)[0]};`, ICSS.EMPTY)
 					let path_or_url = blocklines
 						.split(ICSS.SEMICOLON)[0]
@@ -152,7 +149,6 @@ class Parser {
 
 					lines.map(block => {
 						let [query, rules] = block.split(ICSS.BEGIN_BLOCK)
-						
 						mediaBlocks.push({
 							query: query.trim(),
 							selectors: query.trim().split(ICSS.COMMA).map(s => s.trim()),
@@ -198,27 +194,79 @@ class Parser {
 	}
 
 	/**
-	* parse css selectors
-	* @return array Selector
-	*/
+	 * parse css selectors
+	 * @return array Selector
+	 */
 	parseCSSQuery() {
-		return this.query
-			.trim()
+		return this.query.trim()
 			.split(ICSS.COMMA)
-			.map(s => s.trim())
+			.map(s => new Selector(s.trim()))
 	}
 
 	/**
 	 * clear code and remove comments
 	 * @param string css
 	 * @return string css
-	*/
+	 */
 	clearCode(css = '') {
-		this.css = ICSS.REGEX_REPLACE((((css != ICSS.EMPTY)? css:this.css).replace(ICSS.REGEX_COMMENTS, ICSS.EMPTY)), {'\n': '', '\t': ''})
+		this.css = ICSS.REGEX_REPLACE((((css != ICSS.EMPTY)? css:this.css)
+			.replace(ICSS.REGEX_COMMENTS, ICSS.EMPTY)), {'\n': '', '\t': ''})
 		return this.css
 	}
 }
 
+
+/**
+ * Selector Class
+ * selector object for query selectors
+ */
+class Selector {
+
+	constructor(s) {
+		this.selector = s
+		return this.selector
+	}
+
+	set selector(s) {
+		let chars = {
+			"#": 'IDSelector',
+			".": 'ClassSelector',
+			"[": 'AttrSelector',
+			":": 'PseudoSelector',
+			"::": 'PseudoElementSelector',
+		};let signs = Object.keys(chars);
+
+		this.type = (signs.includes(s.substr(0, 2)) || signs.includes(s[0]))? 
+			chars[signs.filter(i => s.substr(0, 2) == i)[0] || signs.filter(i => s[0] == i)]:'HTMLElement'
+
+		let sel = s.replace(Object.entries(chars).map(([k, v]) => (v == this.type)?k:'').filter(f => f != "")[0], '')
+		Pseudo._indexs.map(p => {
+			if (sel.includes(p))
+				this.pseudo = new Pseudo(p + sel.split(p)[(this.type == 'PseudoElementSelector')? 2:1])
+		})
+	}
+}
+
+
+/**
+ * Pseudo Class
+ * pseudo object for query selectors 
+ */
+class Pseudo {
+
+	constructor(pseudo) {
+		this._pseudo = pseudo
+		this.type = (pseudo[1] == ':')? 'PseudoElement':(pseudo[0] == ':')? 'PseudoClass':'PseudoEvent'
+	}
+
+	get pseudo() {
+		return this._pseudo.replace((this._pseudo[1] == ':')? '::':(this._pseudo[0] == ':')? ':':'@', '')
+	}
+
+	static get _indexs() {
+		return [':', '::', '@']
+	}
+}
 
 /**
  * Rule Class
@@ -233,24 +281,56 @@ class Rule {
 	 */
 	constructor(prop, value) {
 		this.prop = prop
-		this.value = this.set(value)
+		this.value = value
 
 		return this
 	}
 
 	/**
-	 * set details of value rule
-	 * @return object
-	 */
-	set(value) {
-	  this.value = value
-		if (this.value.includes(ICSS.END_BRACKET)) {
-			let str = ICSS.REGEX_BRACKETS.exec(this.value)[1]
-			this.detail = {}
-			this.detail.args = str.split(ICSS.COMMA).map(p => p.trim())
-			this.detail.func = this.value.trim().replace(`(${str})`, ICSS.EMPTY)
+		* get property of rule
+		* @return string property
+		*/
+	get property() {
+		return this.prop
+	}
+
+	/**
+		* get value of rule
+		* @return string value
+		*/
+	get value() {
+		return this._value.value
+	}
+
+	/**
+		* set value and details of rule
+		* @param string val
+		*/
+	set value(val) {
+
+		let func_values = []
+
+		if (val.includes(ICSS.END_BRACKET)) {
+			let value = val.split(ICSS.END_BRACKET).map(s => s.trim());value.pop()
+			let functions = value.map(s => {
+				let [ func, values ] = s.split(ICSS.BEGIN_BRACKET).map(s => s.trim());let f = {}
+				f[func.replaceAll('-', '_')] = (values.includes(ICSS.DATA_URI))?
+					[ values ]:values.split(ICSS.COMMA).map(v => v.trim().split(' '))
+
+				func_values.push(values)
+				return f
+			})
+
+			this.details = { functions }
 		}
-		return this.value
+
+		// trying support to many values of property
+		// if (func_values.length > 0) {
+		// 	let v = val.replace(new RegExp(func_values.join('|'), 'g'), '')
+		// 	let values = v.split(ICSS.COMMA).map(s => s.trim())
+		// }
+
+		this._value = Object.assign({value: val }, this.details)
 	}
 }
 
