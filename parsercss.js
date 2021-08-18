@@ -1,7 +1,7 @@
 /**
  * ParserCSS Class
  */
- class Parser {
+class Parser {
 
 	static get EMPTY() { return '' }
 
@@ -30,13 +30,19 @@
 	static get REGEX_COMMENTS() { return /\/\*(\r|\n|.)*\*\//g }
 
 	static get REGEX_BRACKETS() { return /\(([^)]+)\)/ }
+	
+	static REGEX_REPLACE(str, obj) {
+	  let re = new RegExp(Object.keys(obj).join('|'), 'g')
+	  return str.replace(re, i => obj[i])
+	}
 
 	constructor(css) {
 		this.css = css
 		this.parseCSS()
 
 		delete this.rules
-		return this
+		delete this.query
+		return this.blocks
 	}
 
 	/**
@@ -45,7 +51,7 @@
 	 * @return object rule
 	 */
 	parseCSS(css = '') {
-		let blocks = []
+		this.blocks = []
 		this.css = (css != Parser.EMPTY)? css:this.css
 		this.blocksRule = this.clearCode().split(Parser.END_BLOCK)
 		this.blocksRule.pop()
@@ -53,37 +59,37 @@
 		this.blocksRule.map(block => {
 			[this.query, this.rules] = block.split(Parser.BEGIN_BLOCK)
 
-			blocks.push({
+			this.blocks.push({
 				query: this.query.trim(),
 				selectors: this.parseCSSQuery(),
 				rules: this.parseCSSBlock()
 			})
 		})
 
-		return blocks
+		return this.blocks
 	}
 
 	/**
-	 * get property and values of declarations
+	 * set property and values of declarations
 	 * @param string css
 	 * @return object rule
 	 */
 	parseCSSBlock(rules = '') {
-		let blockRules = []
+		this.blockRules = []
 		this.rules = (rules != Parser.EMPTY)? rules : this.rules
 		this.parseCSSRules()
 			.split(Parser.SEMICOLON)
 			.map(decl => {
 				let [prop, value] = decl.split(Parser.DOTS).map(i => i.trim())
 				if (prop != Parser.EMPTY && value != Parser.EMPTY)
-					blockRules.push(new Rule(prop, this._replaceAll(value, Parser.DATA_URI_VALUES)))
+					this.blockRules.push(new Rule(prop, Parser.REGEX_REPLACE(value, Parser.DATA_URI_VALUES)))
 			})
 
-		return blockRules
+		return this.blockRules
 	}
 
 	/**
-	 * treat css selectors
+	 * parse css rules
 	 * @param string css rules
 	 * @return string
 	 */
@@ -93,11 +99,17 @@
 			.filter(d => d != Parser.EMPTY)
 			.map(decl => {
 				if (decl.includes(Parser.END_BRACKET_RULE)) {
-					let p_key = Parser.REGEX_BRACKETS.exec(decl)[1]
-					if (p_key.includes(Parser.DATA_URI)) {
-						params[p_key] = this._replaceAll(p_key, Parser.DATA_URI_KEYS)
-						decl = this._replaceAll(decl, params)
+					let [p_keys, match, params, d] = [[], [], {}, decl]
+					while (match = Parser.REGEX_BRACKETS.exec(d)) {
+						p_keys.push(match[1])
+						d = d.replace(match[1], '')
 					}
+					p_keys.map(p => {
+						if (p.includes(Parser.DATA_URI)) {
+						params[p] = Parser.REGEX_REPLACE(p, Parser.DATA_URI_KEYS)
+						decl = Parser.REGEX_REPLACE(decl, params)
+						}
+					})
 				}
 
 				return decl.trim()
@@ -123,16 +135,14 @@
 	clearCode(css = '') {
 		this.css = ((css != Parser.EMPTY)? css:this.css)
 			.replace(Parser.REGEX_COMMENTS, Parser.EMPTY)
-			// .replaceAll({' ':'', '\n': '', '\t': ''})
-		return this.css
-	}
-
-	_replaceAll(str, obj) {
-		return str.replace((new RegExp(Object.keys(obj).join('|')), 'g'), i => obj[i])
+		return Parser.REGEX_REPLACE(this.css, {' ':'', '\n': '', '\t': ''})
 	}
 }
 
 
+/**
+ * Rule Class
+ */
 class Rule {
 
 	/**
@@ -143,27 +153,27 @@ class Rule {
 	 */
 	constructor(prop, value) {
 		this.prop = prop
-		this.value = value
-		this.details()
+		this.value = this.set(value)
 
 		return this
 	}
 
 	/**
-	 * get details of value rule
-	 * 
+	 * set details of value rule
+	 * @return object
 	 */
-	details() {
+	set(value) {
+	  this.value = value
 		if (this.value.includes(Parser.END_BRACKET)) {
 			let str = Parser.REGEX_BRACKETS.exec(this.value)[1]
 			this.detail = {}
 			this.detail.args = str.split(Parser.COMMA).map(p => p.trim())
 			this.detail.func = this.value.trim().replace(`(${str})`, Parser.EMPTY)
-
-			return this.detail
 		}
+		return this.value
 	}
 }
+
 
 window.onload = () => {
 
