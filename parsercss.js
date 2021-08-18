@@ -77,13 +77,14 @@ class Parser {
 	parseCSSBlock(rules = '') {
 		this.blockRules = []
 		this.rules = (rules != Parser.EMPTY)? rules : this.rules
-		this.parseCSSRules()
-			.split(Parser.SEMICOLON)
-			.map(decl => {
-				let [prop, value] = decl.split(Parser.DOTS).map(i => i.trim())
-				if (prop != Parser.EMPTY && value != Parser.EMPTY)
-					this.blockRules.push(new Rule(prop, Parser.REGEX_REPLACE(value, Parser.DATA_URI_VALUES)))
-			})
+		this.rules = this.parseCSSRules().split(Parser.SEMICOLON)
+		this.rules.pop()
+		
+		this.rules.map(decl => {
+			let [prop, value] = decl.split(Parser.DOTS).map(i => i.trim())
+			if (prop != Parser.EMPTY && value != Parser.EMPTY)
+				this.blockRules.push(new Rule(prop, Parser.REGEX_REPLACE(value, Parser.DATA_URI_VALUES)))
+		})
 
 		return this.blockRules
 	}
@@ -95,7 +96,8 @@ class Parser {
 	 */
 	parseCSSRules() {
 		let params = {}
-		return this.rules.split(Parser.BREAK_LINE)
+		return this.rules
+			.split(Parser.BREAK_LINE)
 			.filter(d => d != Parser.EMPTY)
 			.map(decl => {
 				if (decl.includes(Parser.END_BRACKET_RULE)) {
@@ -106,14 +108,18 @@ class Parser {
 					}
 					p_keys.map(p => {
 						if (p.includes(Parser.DATA_URI)) {
-						params[p] = Parser.REGEX_REPLACE(p, Parser.DATA_URI_KEYS)
-						decl = Parser.REGEX_REPLACE(decl, params)
+						  params[p] = Parser.REGEX_REPLACE(p, Parser.DATA_URI_KEYS)
+						  decl = Parser.REGEX_REPLACE(decl, params)
 						}
-					})
+					  })
 				}
 
 				return decl.trim()
 			}).join('')
+		// this.rules.pop()
+		// console.log(this.rules)
+		// this.rules = this.rule.join('')
+		return this.rules
 	}
 
 	/**
@@ -133,9 +139,9 @@ class Parser {
 	 * @return string css
 	*/
 	clearCode(css = '') {
-		this.css = ((css != Parser.EMPTY)? css:this.css)
-			.replace(Parser.REGEX_COMMENTS, Parser.EMPTY)
-		return Parser.REGEX_REPLACE(this.css, {' ':'', '\n': '', '\t': ''})
+		console.log(this.css)
+		this.css = ((css != Parser.EMPTY)? css:this.css).replace(Parser.REGEX_COMMENTS, Parser.EMPTY)
+		return Parser.REGEX_REPLACE(this.css, {'\n': '', '\t': ''})
 	}
 }
 
