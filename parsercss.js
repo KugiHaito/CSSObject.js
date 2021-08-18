@@ -1,8 +1,11 @@
-/**
- * ParserCSS Class
- */
-class Parser {
+class ICSSStatments {
+	static get IMPORT() { return 'import' }
+	static get MEDIA() { return 'media' }
+	static get KEYFRAME() { return 'keyframe' }
+	static get FONT_FACE() { return 'font-face' }
+}
 
+class ICSS {
 	static get EMPTY() { return '' }
 
 	static get DOTS() { return ':' }
@@ -18,6 +21,8 @@ class Parser {
 	static get END_BLOCK() { return '}' }
 
 	static get END_BRACKET() { return ')' }
+
+	static get DOUBLE_END_BRACKETS() { return '}}' }
 
 	static get END_BRACKET_RULE() { return ');' }
 
@@ -35,14 +40,27 @@ class Parser {
 	  let re = new RegExp(Object.keys(obj).join('|'), 'g')
 	  return str.replace(re, i => obj[i])
 	}
+}
 
+/**
+ * ParserCSS Class
+ */
+class Parser {
+
+	/**
+	 * Initializate Parser
+	 * @param string css (optional)
+	 * @return object Parser
+	 */
 	constructor(css) {
 		this.css = css
+		this.clearCode()
 		this.parseCSS()
 
 		delete this.rules
 		delete this.query
-		return this.blocks
+		delete this.blockRules
+		return this
 	}
 
 	/**
@@ -52,12 +70,13 @@ class Parser {
 	 */
 	parseCSS(css = '') {
 		this.blocks = []
-		this.css = (css != Parser.EMPTY)? css:this.css
-		this.blocksRule = this.clearCode().split(Parser.END_BLOCK)
+		this.css = (css != ICSS.EMPTY)? css:this.css
+		this.blocksRule = this.parseCSSStatments()
+			.split(ICSS.END_BLOCK)
 		this.blocksRule.pop()
 
 		this.blocksRule.map(block => {
-			[this.query, this.rules] = block.split(Parser.BEGIN_BLOCK)
+			[this.query, this.rules] = block.split(ICSS.BEGIN_BLOCK)
 
 			this.blocks.push({
 				query: this.query.trim(),
@@ -76,17 +95,79 @@ class Parser {
 	 */
 	parseCSSBlock(rules = '') {
 		this.blockRules = []
-		this.rules = (rules != Parser.EMPTY)? rules : this.rules
-		this.rules = this.parseCSSRules().split(Parser.SEMICOLON)
+		this.rules = (rules != ICSS.EMPTY)? rules : this.rules
+		this.rules = this.parseCSSRules().split(ICSS.SEMICOLON)
 		this.rules.pop()
 		
 		this.rules.map(decl => {
-			let [prop, value] = decl.split(Parser.DOTS).map(i => i.trim())
-			if (prop != Parser.EMPTY && value != Parser.EMPTY)
-				this.blockRules.push(new Rule(prop, Parser.REGEX_REPLACE(value, Parser.DATA_URI_VALUES)))
+			let [prop, value] = decl.split(ICSS.DOTS).map(i => i.trim())
+			if (prop != ICSS.EMPTY && value != ICSS.EMPTY)
+				this.blockRules.push(new Rule(prop, ICSS.REGEX_REPLACE(value, ICSS.DATA_URI_VALUES)))
 		})
 
 		return this.blockRules
+	}
+
+
+	parseCSSStatments() {
+		this.statments = {imports:[], medias:[], keyframes:[], font_faces:[]}
+		this.css.split('@').map(blocklines => {
+			let blockline = Object.keys(this.statments)
+				.map(s => ICSS.REGEX_REPLACE(s, {'s':'', '_':'-'}))
+				.filter(statment => blocklines.startsWith(statment))
+
+			if (blockline.length > 0) {
+				let statment = `${blockline[0].replace('-', '_')}s`
+
+				if (blockline[0] == ICSSStatments.IMPORT) {
+					console.log(this.css)
+					this.css = this.css.replace(`@${blocklines.split(ICSS.SEMICOLON)[0]};`, ICSS.EMPTY)
+					let path_or_url = blocklines
+						.split(ICSS.SEMICOLON)[0]
+						.split(blockline[0])[1].trim()
+
+					if (path_or_url.startsWith('"')) {
+						path_or_url = path_or_url.replace(new RegExp('"', 'g'), ICSS.EMPTY)
+					}
+
+					this.statments[statment].push(path_or_url)
+				} else if (blockline[0] == ICSSStatments.FONT_FACE) {
+					this.css = this.css.replace(`@${blocklines.split(ICSS.END_BLOCK)[0]}}`, ICSS.EMPTY)
+					let rules = blocklines.split(ICSS.BEGIN_BLOCK)[1]
+						.split(ICSS.END_BLOCK)[0].trim()
+					rules = rules.split(ICSS.SEMICOLON).map(r => {
+						if (r != ""){
+							let [p, v] = r.split(ICSS.DOTS)
+							return (new Rule(p, v.trim().replace(new RegExp('"', 'g'), ICSS.EMPTY)))
+					}}).filter(r => r != undefined)
+					
+					this.statments[statment].push(rules)
+				} else {
+					let mediaBlocks = []
+					let lines = blocklines.split(ICSS.DOUBLE_END_BRACKETS)[0]
+					this.css = this.css.replace(`@${lines}}}`, ICSS.EMPTY)
+					let mediaQuery = lines.substring(0, lines.indexOf(ICSS.BEGIN_BLOCK)-1)
+					lines = lines.substring(lines.indexOf(ICSS.BEGIN_BLOCK)+1)
+						.split(ICSS.END_BLOCK)
+
+					lines.map(block => {
+						let [query, rules] = block.split(ICSS.BEGIN_BLOCK)
+						
+						mediaBlocks.push({
+							query: query.trim(),
+							selectors: query.trim().split(ICSS.COMMA).map(s => s.trim()),
+							rules: rules.split(ICSS.SEMICOLON).map(r => {
+								if (r != ""){
+									let [p, v] = r.split(ICSS.DOTS)
+									return (new Rule(p, v))
+							}}).filter(r => r != undefined)
+						})
+					})
+					this.statments[statment].push({query: mediaQuery, blocks: mediaBlocks})
+				}
+		}})
+
+		return this.css
 	}
 
 	/**
@@ -95,31 +176,25 @@ class Parser {
 	 * @return string
 	 */
 	parseCSSRules() {
-		let params = {}
-		return this.rules
-			.split(Parser.BREAK_LINE)
-			.filter(d => d != Parser.EMPTY)
+		return this.rules.split(ICSS.BREAK_LINE)
+			.filter(d => d != ICSS.EMPTY)
 			.map(decl => {
-				if (decl.includes(Parser.END_BRACKET_RULE)) {
+				if (decl.includes(ICSS.END_BRACKET_RULE)) {
 					let [p_keys, match, params, d] = [[], [], {}, decl]
-					while (match = Parser.REGEX_BRACKETS.exec(d)) {
+					while (match = ICSS.REGEX_BRACKETS.exec(d)) {
 						p_keys.push(match[1])
 						d = d.replace(match[1], '')
 					}
 					p_keys.map(p => {
-						if (p.includes(Parser.DATA_URI)) {
-						  params[p] = Parser.REGEX_REPLACE(p, Parser.DATA_URI_KEYS)
-						  decl = Parser.REGEX_REPLACE(decl, params)
+						if (p.includes(ICSS.DATA_URI)) {
+							params[p] = ICSS.REGEX_REPLACE(p, ICSS.DATA_URI_KEYS)
+							decl = ICSS.REGEX_REPLACE(decl, params)
 						}
-					  })
+					})
 				}
 
 				return decl.trim()
 			}).join('')
-		// this.rules.pop()
-		// console.log(this.rules)
-		// this.rules = this.rule.join('')
-		return this.rules
 	}
 
 	/**
@@ -129,7 +204,7 @@ class Parser {
 	parseCSSQuery() {
 		return this.query
 			.trim()
-			.split(Parser.COMMA)
+			.split(ICSS.COMMA)
 			.map(s => s.trim())
 	}
 
@@ -139,9 +214,8 @@ class Parser {
 	 * @return string css
 	*/
 	clearCode(css = '') {
-		console.log(this.css)
-		this.css = ((css != Parser.EMPTY)? css:this.css).replace(Parser.REGEX_COMMENTS, Parser.EMPTY)
-		return Parser.REGEX_REPLACE(this.css, {'\n': '', '\t': ''})
+		this.css = ICSS.REGEX_REPLACE((((css != ICSS.EMPTY)? css:this.css).replace(ICSS.REGEX_COMMENTS, ICSS.EMPTY)), {'\n': '', '\t': ''})
+		return this.css
 	}
 }
 
@@ -170,21 +244,16 @@ class Rule {
 	 */
 	set(value) {
 	  this.value = value
-		if (this.value.includes(Parser.END_BRACKET)) {
-			let str = Parser.REGEX_BRACKETS.exec(this.value)[1]
+		if (this.value.includes(ICSS.END_BRACKET)) {
+			let str = ICSS.REGEX_BRACKETS.exec(this.value)[1]
 			this.detail = {}
-			this.detail.args = str.split(Parser.COMMA).map(p => p.trim())
-			this.detail.func = this.value.trim().replace(`(${str})`, Parser.EMPTY)
+			this.detail.args = str.split(ICSS.COMMA).map(p => p.trim())
+			this.detail.func = this.value.trim().replace(`(${str})`, ICSS.EMPTY)
 		}
 		return this.value
 	}
 }
 
 
-window.onload = () => {
-
-	let cssText = document.styleSheets[0].ownerNode.innerText
-	let parsed = (new Parser).parseCSS(cssText)
-	console.log(parsed)
-
-}
+let cssText = document.styleSheets[0].ownerNode.innerText
+console.log(new Parser(cssText))

@@ -11,6 +11,10 @@
 		<meta name="application-name" content="CSSObject.js">
 		<title>CSSObject.js | KugiHaito</title>
 		<style>
+
+			@import "style.css";
+			@import url(url_to_font_or_css);
+
 			* {
 				margin: 0;
 				padding: 0;
@@ -18,11 +22,31 @@
 
 			}
 
-			body {
-				margin: 20px 40px;
+			@keyframes mymove {
+			 	from {top: 0px;}
+			 	to {top: 200px;}
 			}
 
-			span {color: #212121;margin: 5px 0;}
+			body {
+				padding: 20px 40px;
+			}
+
+			@font-face {
+				font-family: "Open Sans";
+				src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2");
+			}
+
+			p, span {color: #212121;margin: 5px 0;}
+
+			@media (max-width: 760px) {
+				body {
+					padding: 10px 20px;
+				}
+
+				p, span {
+					margin: 0;
+				}
+			}
 
 			.btn{
 				color:white;
