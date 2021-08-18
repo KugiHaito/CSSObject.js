@@ -14,7 +14,6 @@ class Parser {
 		rules.pop()
 		rules.map(block => {
 			let [query, rule] = block.split('{')
-
 			blocks.push({
 				query: query.trim(),
 				selectors: query.trim().split(',').map(s => s.trim()),
@@ -32,30 +31,30 @@ class Parser {
 	 */
 	parseCSSBlock(css) { 
 		let rule = {}
-		// let declarations = css.split(';')
-		let declarations = css.split('\n')
+		let params = []
+		const regex = /\(([^)]+)\)/;
+
+		let decls = css.split('\n')
 			.filter(d => d != "")
 			.map(decl => {
-				let param = decl.match(/\(([^()]*)\)/g)
-				if ((param != 'undefined' || param != "null") && param.includes('data:')) {
-					param.replace(';', '&')
-				}
-
+				if (decl.includes('('))
+					params.push(regex.exec(decl)[1])
 				return decl.trim()
-			})
-			.split(';')
+			}).join('')
 
-		declarations.pop()
-		declarations = declarations.map(decl => {
-				let param = d.match(/\(([^()]*)\)/g)
-				if (params != 'undefined' && param.includes('data:')) {
-					param.replace('&', ';')
-				}
-			})
+		if (params.length > 0) {
+			let _params = params.map(p => p.replace(':', '=').replace(';', '&'))
+			decls = params.map((p, i) => {
+				return decls.replace(p, _params[i])
+			}).join('')
+		}
 
-		declarations.map(decl => {
+		decls = decls.split(';')
+		decls.pop()
+
+		decls.map(decl => {
 			let [prop, value] = decl.split(":").map(i => i.trim())
-			if (prop != "" && value != "") rule[prop] = value
+			if (prop != "" && value != "") rule[prop] = value.replace('=', ':').replace('&', ';')
 		})
 
 		return rule
@@ -74,6 +73,7 @@ class Parser {
 window.onload = () => {
 
 	let cssText = document.styleSheets[0].ownerNode.innerText
-	console.log((new Parser).parseCSS(cssText))
+	let parsed = (new Parser).parseCSS(cssText)
+	console.log(parsed)
 
 }
