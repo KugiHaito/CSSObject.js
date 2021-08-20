@@ -1,0 +1,18 @@
+/* card component */
+.card {
+	width: 100%;
+	display: flex;
+	padding: 10px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+}
+
+.card > .title {
+	font-size: 18px;
+}
+
+.card > .description,
+.card > p {
+	font-size: 14px;
+	font-weight: 300;
+}
+
