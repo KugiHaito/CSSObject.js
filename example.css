@@ -16,3 +16,16 @@
 	font-weight: 300;
 }
 
+/* css object */
+.cssobject {
+	padding: 10px 20px;
+}
+
+.cssobject pre {
+	background-color: lightgray;
+	font-size: 12px;
+	margin: 10px 5px;
+	padding: 20px;
+	overflow-x: auto;
+	border-radius: 5px;
+}

@@ -7,10 +7,15 @@ let sheets = Object.values(document.styleSheets)
 
 sheets.forEach(sheet => {
 
-	// get and show css object
+	// get css object
 	let cssobj = new CSSObject(sheet)
 
-	// display css object
-	console.log(cssobj)
+	// convert to json
+	let cssjson = JSON.stringify(cssobj, null, '    ')
 
+	// print on page
+	let tag = document.querySelector('.cssobject code')
+	tag.innerText = cssjson.trim()
+
+	console.log(cssobj) // too shows on console :p
 })
