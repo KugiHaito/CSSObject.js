@@ -1,4 +1,4 @@
-import ICSS from '../interfaces/ICSS.js'
+import ICSS from '../enums/ICSS.js.js'
 import Pseudo from '../queries/Pseudo.js'
 
 
