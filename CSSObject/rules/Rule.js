@@ -1,4 +1,4 @@
-import ICSS from '../enums/ICSS.js.js';
+import ICSS from '../enums/ICSS.js';
 
 
 /**
