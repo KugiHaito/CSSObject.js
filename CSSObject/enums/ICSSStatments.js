@@ -11,7 +11,7 @@ const ICSSStatments = {
 	MEDIA: 'media',
 	
 	/** Keyframe CSS Statment */
-	KEYFRAME: 'keyframe',
+	KEYFRAME: 'keyframes',
 	
 	/** Font Face CSS Statment */
 	FONT_FACE: 'font-face'
