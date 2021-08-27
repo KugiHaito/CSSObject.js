@@ -21,12 +21,20 @@ import Pseudo from "../queries/Pseudo.js"
 		return this
 	}
 
+	/**
+	 * get selector type
+	 * @param {string} type
+	 */
 	type(type) {
 		Object.entries(ISelector).map(([selector, char]) => {
 			if (type == char) this.type = selector
 		})
 	}
 
+	/**
+	 * get selector combiners
+	 * @param {string} value
+	 */
 	combiner(value) {
 		this.hasCombiner = false
 		let v = value.replace('~=', '/=/')
@@ -41,6 +49,17 @@ import Pseudo from "../queries/Pseudo.js"
 	}
 
 	/**
+	 * get selector pseudo
+	 * @param {string} value
+	 */
+	pseudo(value) {
+		let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
+			let sign = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/g, '')
+			if (ICSS.PSEUDO.KEYS.includes(sign))
+				this.pseudo = new Pseudo(sign + selct.split(sign).pop())
+	}
+
+	/**
 	 * set selector property
 	 * @param {string} value new value
 	 */
@@ -48,13 +67,7 @@ import Pseudo from "../queries/Pseudo.js"
 		this.name = value
 		this.type(value.substr(0, 2).replace(/[a-z]+/, ''))
 		this.combiner(value)
-
-		if (!this.hasCombiner) {
-			let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
-			let sign = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/g, '')
-			if (ICSS.PSEUDO.KEYS.includes(sign))
-				this.pseudo = new Pseudo(sign + selct.split(sign).pop())
-		}
+		if (!this.hasCombiner) this.pseudo(value)
 	}
 }
 
