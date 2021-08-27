@@ -1,3 +1,6 @@
+import IPseudo from "../enums/IPseudo.js"
+
+
 /**
  * Pseudo Class
  * pseudo object for query selectors 
@@ -9,18 +12,17 @@
 	 * @param {string} pseudo pseudo name
 	 */
 	constructor(pseudo) {
-		this._pseudo = pseudo
-		this.type = (pseudo[1] == ':')? 'PseudoElement':(pseudo[0] == ':')? 'PseudoClass':'PseudoEvent'
+		this.pseudo = pseudo
 
 		return this
 	}
 
-	/**
-	 * get pseudo name
-	 * @returns string
-	 */
-	get pseudo() {
-		return this._pseudo.replace((this._pseudo[1] == ':')? '::':(this._pseudo[0] == ':')? ':':'@', '')
+	set pseudo(value) {
+		this.name = value
+		Object.entries(IPseudo).map(([pseudo, char]) => {
+			if (value.substr(0, 2).replace(/[a-z]/, '') == char)
+				this.type = pseudo
+		})
 	}
 
 }
