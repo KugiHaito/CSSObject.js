@@ -5,16 +5,16 @@
 const ICombiner = {
 
 	/** Combinator Descendant Selector */
-	DESCENDANT_SELECTOR: " ",
+	DescendantSelector: " ",
+
+	/** Combinator Children Selector */
+	ChildSelector: ">",
 
 	/** Combinator Adjacent Sibling Selector */
-	ADJACENT_SIBLING: "+",
-	
+	AdjacentSibling: "+",
+
 	/** Combinator General Sibling Selector */
-	GENERAL_SIBLING: "~",
-	
-	/** Combinator Children Selector */
-	CHILDREN_SELECTOR: ">",
+	GeneralSibling: "~",
 
 }
 
