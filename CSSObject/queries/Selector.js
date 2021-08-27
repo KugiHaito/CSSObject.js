@@ -1,5 +1,5 @@
-import ICombinator from "../enums/ICombinator.js"
 import ICSS from "../enums/ICSS.js"
+import ICombinator from "../enums/ICombiner.js"
 import ISelector from "../enums/ISelector.js"
 import Pseudo from "../queries/Pseudo.js"
 

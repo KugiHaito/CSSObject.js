@@ -1,8 +1,8 @@
 /**
- * @enum ICombinator
+ * @enum ICombiner
  * Selector combinators
  */
-const ICombinator = {
+const ICombiner = {
 
 	/** Combinator Descendant Selector */
 	DESCENDANT_SELECTOR: " ",
@@ -19,4 +19,4 @@ const ICombinator = {
 }
 
 
-export default ICombinator
+export default ICombiner
