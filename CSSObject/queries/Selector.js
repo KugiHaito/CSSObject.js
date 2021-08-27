@@ -54,9 +54,9 @@ import Pseudo from "../queries/Pseudo.js"
 	 */
 	pseudo(value) {
 		let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
-			let sign = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/g, '')
-			if (ICSS.PSEUDO.KEYS.includes(sign))
-				this.pseudo = new Pseudo(sign + selct.split(sign).pop())
+		let tag = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/, '')
+		let sign = tag.substr(0, 2).replace(/[a-z-]/g, '')
+		if (ICSS.PSEUDO.KEYS.includes(sign)) this.pseudo = new Pseudo(tag)
 	}
 
 	/**
