@@ -1,5 +1,5 @@
 import ICSS from "../enums/ICSS.js"
-import ICombinator from "../enums/ICombiner.js"
+import ICombiner from "../enums/ICombiner.js"
 import ISelector from "../enums/ISelector.js"
 import Pseudo from "../queries/Pseudo.js"
 
@@ -27,6 +27,19 @@ import Pseudo from "../queries/Pseudo.js"
 		})
 	}
 
+	combiner(value) {
+		this.hasCombiner = false
+		let v = value.replace('~=', '/=/')
+		Object.entries(ICombiner).map(([combiner, char]) => {
+			if (v.includes(char)) {
+				this.hasCombiner = true
+				this.combiner = combiner
+				this.selectors = v.split(char)
+					.map(s => new Selector(s.trim().replace('/=/', '~=')))
+			}
+		})
+	}
+
 	/**
 	 * set selector property
 	 * @param {string} value new value
@@ -34,17 +47,9 @@ import Pseudo from "../queries/Pseudo.js"
 	set selector(value) {
 		this.name = value
 		this.type(value.substr(0, 2).replace(/[a-z]+/, ''))
+		this.combiner(value)
 
-		let v = value.replace('~=', '/=/')
-		Object.entries(ICombinator).map(([combinator, char]) => {
-			if (v.includes(char)) {
-				this.combinator = combinator
-				this.selectors = v.split(char)
-					.map(s => new Selector(s.trim().replace('/=/', '~=')))
-			}
-		})
-
-		if (!this.combinator) {
+		if (!this.hasCombiner) {
 			let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
 			let sign = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/g, '')
 			if (ICSS.PSEUDO.KEYS.includes(sign))
