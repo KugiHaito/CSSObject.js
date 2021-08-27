@@ -21,16 +21,19 @@ import Pseudo from "../queries/Pseudo.js"
 		return this
 	}
 
+	type(type) {
+		Object.entries(ISelector).map(([selector, char]) => {
+			if (type == char) this.type = selector
+		})
+	}
+
 	/**
 	 * set selector property
 	 * @param {string} value new value
 	 */
 	set selector(value) {
 		this.name = value
-		Object.entries(ISelector).map(([selector, char]) => {
-			if (value.substr(0, 2).replace(/[a-z]+/, '') == char)
-				this.type = selector
-		})
+		this.type(value.substr(0, 2).replace(/[a-z]+/, ''))
 
 		let v = value.replace('~=', '/=/')
 		Object.entries(ICombinator).map(([combinator, char]) => {
