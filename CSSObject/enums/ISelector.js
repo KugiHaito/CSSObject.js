@@ -5,10 +5,10 @@
  const ISelector = {
 
 	/** Universal Selector */
-	UniversalSelector: '*',
+	UniversalSelector: "*",
 
 	/** Tag Selector Type */
-	TagSelector: ' ',
+	TagSelector: "",
 
 	/** ID Selector Type */
 	IDSelector: "#",
