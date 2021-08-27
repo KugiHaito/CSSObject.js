@@ -1,3 +1,4 @@
+import ICombinator from "../enums/ICombinator.js"
 import ICSS from "../enums/ICSS.js"
 import ISelector from "../enums/ISelector.js"
 import Pseudo from "../queries/Pseudo.js"
@@ -31,10 +32,21 @@ import Pseudo from "../queries/Pseudo.js"
 				this.type = selector
 		})
 
-		let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
-		let sign = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/g, '')
-		if (ICSS.PSEUDO.KEYS.includes(sign))
-			this.pseudo = new Pseudo(sign + selct.split(sign).pop())
+		let v = value.replace('~=', '/=/')
+		Object.entries(ICombinator).map(([combinator, char]) => {
+			if (v.includes(char)) {
+				this.combinator = combinator
+				this.selectors = v.split(char)
+					.map(s => new Selector(s.trim().replace('/=/', '~=')))
+			}
+		})
+
+		if (!this.combinator) {
+			let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
+			let sign = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/g, '')
+			if (ICSS.PSEUDO.KEYS.includes(sign))
+				this.pseudo = new Pseudo(sign + selct.split(sign).pop())
+		}
 	}
 }
 
