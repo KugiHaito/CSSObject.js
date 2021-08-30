@@ -26,7 +26,7 @@ class Rule {
 	set rule(value) {
 		let [ prop, val ] = value
 		this.property = prop
-		this.value = this.value(val)
+		this.value = this.values(val)
 	}
 
 	/**
@@ -49,29 +49,38 @@ class Rule {
 
 
 	/**
-	 * set value and details of rule
+	 * get values of rule property
 	 * @param {string} values
+	 * @returns string[]
 	 */
-	value(value, step = true) {
-		if (value.includes(ICSS.BRACKET.BEGIN) && step) {			
-			let params = value.split(ICSS.BRACKET.BEGIN).filter(v => v.includes(')')).map(v => v.split(')').shift())
-			let val = params.reduce((a, p, i) => a.replace(`(${p})`, `#${i}`), value)
+	values(values) {
+		if (values.includes(ICSS.BRACKET.BEGIN)) {			
+			let params = values.split(ICSS.BRACKET.BEGIN).filter(v => v.includes(')')).map(v => v.split(')').shift())
+			let val = params.reduce((a, p, i) => a.replace(`(${p})`, `#${i}`), values)
 			let v = val.split(val.includes(ICSS.COMMA)? ICSS.COMMA:" ")
 
 			return params.reduce((a, p, i) => a.replace(`#${i}`, `(${p})`), v.join('|'))
-				.split('|').map(v => this.value(v.trim(), false))
-		} else if (value.includes(ICSS.BRACKET.END)) {
-			let val = value.replace(ICSS.BRACKET.END, ''), func = {}
-			let [ f, v ] = val.split(ICSS.BRACKET.BEGIN).map(v => v.trim())
-			
-			func[f.replaceAll('-', '_')] = (v.includes(ICSS.DATA_URI.KEY))?
-				[ v ]:v.split(v.includes(ICSS.COMMA)? ICSS.COMMA:" ")
-						.filter(v => v != ICSS.EMPTY).map(v => v.trim())
-			
-			return func
+				.split('|').map(v => this.value(v.trim()))
 		}
 
-		return value.split(ICSS.COMMA).map(v => v.trim())
+		return this.value(values)
+	}
+
+	/**
+	 * get value and details of rule
+	 * @param {string} values
+	 */
+	value(values) {
+		 if (values.includes(ICSS.BRACKET.END)) {
+			let val = values.replace(ICSS.BRACKET.END, '')
+			let [ func, value ] = val.split(ICSS.BRACKET.BEGIN).map(v => v.trim())
+			value.split(value.includes(ICSS.COMMA)? ICSS.COMMA:" ")
+				 .filter(v => v != ICSS.EMPTY).map(v => v.trim())
+			
+			return { func, value }
+		}
+
+		return values.split(ICSS.COMMA).map(v => v.trim())
 	}
 }
 
