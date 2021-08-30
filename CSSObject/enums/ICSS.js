@@ -22,6 +22,9 @@ const ICSS = {
 	/** Break Line Character */
 	BREAK_LINE: '\n',
 
+	/** Important Rule Character */
+	IMPORTANT: '!',
+
 	/** Block Characters */
 	BLOCK: {
 

@@ -74,13 +74,21 @@ class Rule {
 		 if (values.includes(ICSS.BRACKET.END)) {
 			let val = values.replace(ICSS.BRACKET.END, '')
 			let [ func, value ] = val.split(ICSS.BRACKET.BEGIN).map(v => v.trim())
-			value.split(value.includes(ICSS.COMMA)? ICSS.COMMA:" ")
-				 .filter(v => v != ICSS.EMPTY).map(v => v.trim())
-			
+			value = this.important(value)
+				.split(value.includes(ICSS.COMMA)? ICSS.COMMA:" ")
+				.filter(v => v != ICSS.EMPTY).map(v => v.trim())
+
 			return { func, value }
 		}
 
-		return values.split(ICSS.COMMA).map(v => v.trim())
+		return this.important(values).split(ICSS.COMMA).map(v => v.trim())
+	}
+
+	important(value) {
+		let i = value.split(ICSS.IMPORTANT)
+		this.isImportant = (i.length > 1)? true:false
+
+		return (this.isImportant)? i.shift().trim():value
 	}
 }
 
