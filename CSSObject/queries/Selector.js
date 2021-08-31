@@ -27,11 +27,12 @@ import Pseudo from "../queries/Pseudo.js"
 	 */
 	type(value) {
 		Object.entries(ISelector).map(([selector, char]) => {
-			if (value.substr(0, 3).replace(/[0-9a-z]+/, '') == char)
+			if (value.substr(0, 3).replace(/[0-9a-z-]+/g, '') == char)
 				this.type = selector
 
-			if (value.substr(0, 3).startsWith(char))
-				this.type = selector
+			if (char == ISelector.ToKeyframeSelector || char == ISelector.FromKeyframeSelector) 
+				if (value.startsWith(char))
+					this.type = selector
 		})
 	}
 
