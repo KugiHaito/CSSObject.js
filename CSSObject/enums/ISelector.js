@@ -25,6 +25,15 @@
 	/** Pseudo-Element Selector Type */
 	PseudoElementSelector: "::",
 
+	/** Percentage Selector Type (Keyframe) */
+	PercentageSelector: "%",
+
+	/** From Keyframe Selector Type */
+	FromKeyframeSelector: "from",
+
+	/** To Keyframe Selector Type */
+	ToKeyframeSelector: "to"
+
 }
 
 
