@@ -23,11 +23,15 @@ import Pseudo from "../queries/Pseudo.js"
 
 	/**
 	 * get selector type
-	 * @param {string} type
+	 * @param {string} value
 	 */
-	type(type) {
+	type(value) {
 		Object.entries(ISelector).map(([selector, char]) => {
-			if (type == char) this.type = selector
+			if (value.substr(0, 3).replace(/[0-9a-z]+/, '') == char)
+				this.type = selector
+
+			if (value.substr(0, 3).startsWith(char))
+				this.type = selector
 		})
 	}
 
@@ -65,7 +69,7 @@ import Pseudo from "../queries/Pseudo.js"
 	 */
 	set selector(value) {
 		this.name = value
-		this.type(value.substr(0, 2).replace(/[a-z]+/, ''))
+		this.type(value)
 		this.combiner(value)
 		if (!this.hasCombiner) this.pseudo(value)
 	}
