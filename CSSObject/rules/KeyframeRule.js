@@ -24,7 +24,7 @@ class KeyframeRule extends BlocksParser(ParserBlock) {
 	}
 
 	set keyframe(values) {
-		let blcks = values.split(ICSS.BLOCK.END);blcks.pop()
+		let blcks = values.split(ICSS.BLOCK.END)
 		this.blocks = blcks.map(b => this.block(b.trim()))
 	}
 
