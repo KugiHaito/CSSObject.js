@@ -31,8 +31,7 @@ import Pseudo from "../queries/Pseudo.js"
 				this.type = selector
 
 			if (char == ISelector.ToKeyframeSelector || char == ISelector.FromKeyframeSelector) 
-				if (value.startsWith(char))
-					this.type = selector
+				if (value.startsWith(char)) this.type = selector
 		})
 	}
 

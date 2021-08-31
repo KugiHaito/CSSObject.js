@@ -81,7 +81,8 @@ class Rule {
 			return { func, value }
 		}
 
-		return this.important(values).split(ICSS.COMMA).map(v => v.trim())
+		let value = this.important(values).split(ICSS.COMMA).map(v => v.trim())
+		return value.length > 1 ? value:value.pop()
 	}
 
 	important(value) {

@@ -24,7 +24,7 @@ class FontfaceRule extends BlocksParser(ParserBlock) {
 		this.rules = this.rules(values)
 		let r = this.rules
 
-		this.name = r.find(r => r.prop == 'font-family').value.join('')
+		this.name = r.find(r => r.prop == 'font-family').value
 	}
 
 }
