@@ -4,6 +4,7 @@ import ImportRule from "../rules/ImportRule.js"
 import FontfaceRule from "../rules/FontfaceRule.js"
 import KeyframeRule from "../rules/KeyframeRule.js"
 import MediaRule from "../rules/MediaRule.js"
+import CharsetRule from "../rules/CharsetRule.js"
 
 
 /**
@@ -32,6 +33,15 @@ const StatmentsParser = (Base) => class extends Base {
 			})
 
 		return this.css
+	}
+
+	/**
+	 * get statment block
+	 * @param {string} blck
+	 */
+	charset(blck) {
+		let type = blck.replaceAll('"', '')
+		this.stats.charsets.push(new CharsetRule(type))
 	}
 
 	/**
