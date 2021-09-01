@@ -1,3 +1,6 @@
+import ICSS from "./ICSS.js"
+
+
 /**
  * @enum ICSSStatments
  * CSS Staments Names
@@ -5,17 +8,50 @@
 const ICSSStatments = {
 
 	/** Import CSS Statment */
-	IMPORT: 'import',
+	IMPORT: {
+		
+		/** Import Key */
+		KEY:'import',
+
+		/** Import Block Delimiter */
+		DELIMITER: ICSS.SEMICOLON,
+
+	},
 	
 	/** Media Query CSS Statment */
-	MEDIA: 'media',
+	MEDIA: {
+		
+		/** Media Key */
+		KEY:'media',
+
+		/** Media Block Delimiter */
+		DELIMITER: ICSS.BLOCK.DOUBLE_END,
+
+	},
 	
 	/** Keyframe CSS Statment */
-	KEYFRAME: 'keyframes',
+	KEYFRAME: {
+		
+		/** Keyframe Key */
+		KEY:'keyframes',
+
+		/** Keyframe Block Delimiter */
+		DELIMITER: ICSS.BLOCK.DOUBLE_END,
+
+	},
 	
-	/** Font Face CSS Statment */
-	FONT_FACE: 'font-face'
+	/** FontFace CSS Statment */
+	FONTFACE: {
+		
+		/** FontFace Key */
+		KEY:'font-face',
+
+		/** Font Block Delimiter */
+		DELIMITER: ICSS.BLOCK.END,
+
+	},
 
 }
+
 
 export default ICSSStatments
