@@ -24,7 +24,7 @@ const StatmentsParser = (Base) => class extends Base {
 				Object.entries(ICSSStatments).map(([key, stat]) => {
 					if (blck.startsWith(stat.KEY)) {
 						let stat_block = blck.split(stat.DELIMITER).shift()
-						this[key.toLowerCase()].call(this, stat_block)
+						this[key.toLowerCase()].call(this, stat_block.replace(stat.KEY, ICSS.EMPTY).trim())
 						this.css = this.css
 							.replace(`${ICSS.AT + stat_block + stat.DELIMITER}`, ICSS.EMPTY)
 					}
@@ -39,8 +39,8 @@ const StatmentsParser = (Base) => class extends Base {
 	 * @param {string} block
 	 */
 	import(block) {
-		let b = block.replace(ICSSStatments.IMPORT, '').trim()
-		let [ url, where ] = b.replace(' ', '|').split('|').map(i => i.trim())
+		let [ url, where ] = block
+			.replace(' ', '|').split('|').map(i => i.trim())
 
 		this.stats.imports.push(new ImportRule(url, where))
 	}
@@ -62,7 +62,6 @@ const StatmentsParser = (Base) => class extends Base {
 	 */
 	keyframe(block) {
 		let [ name, blocks ] = block
-			.replace(ICSSStatments.KEYFRAME, '')
 			.replace(ICSS.BLOCK.BEGIN, '|').split('|').map(i => i.trim())
 
 		this.stats.keyframes.push(new KeyframeRule(name, blocks))
@@ -74,8 +73,8 @@ const StatmentsParser = (Base) => class extends Base {
 	 */
 	media(block) {
 		let [ query, blocks ] = block
-			.replace(ICSSStatments.MEDIA, '')
-			.replace(ICSS.BLOCK.BEGIN, '|').split('|').map(i => i.trim())
+			.replace(ICSS.BLOCK.BEGIN, '|').split('|')
+			.map(i => i.trim())
 
 		this.stats.medias.push(new MediaRule(query, blocks))
 	}
