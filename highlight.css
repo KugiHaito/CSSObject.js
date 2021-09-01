@@ -1,0 +1,20 @@
+/** 
+ * highlight to JSONhighlight 
+ * @author KugiHaito
+ */
+.highlight-key {
+	font-weight: 400;
+	color: #b41818;
+ }
+
+.highlight-value {
+	 color: #ebeb4c;
+ }
+
+.highlight-bracket {
+	 color: #1c498d;
+}
+
+.highlight-block {
+	 color: #c0176b;
+}

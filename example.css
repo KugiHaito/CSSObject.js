@@ -22,7 +22,8 @@
 }
 
 .cssobject pre {
-	background-color: lightgray;
+	background-color: #121212;
+	color: #e3e3e3;
 	font-size: 12px;
 	margin: 10px 5px;
 	padding: 20px;
