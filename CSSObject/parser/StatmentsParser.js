@@ -21,17 +21,14 @@ const StatmentsParser = (Base) => class extends Base {
 		this.css
 			.split(ICSS.AT)
 			.map(blck => {
-				if (blck.startsWith(ICSSStatments.IMPORT))
-					this.import(blck.split(ICSS.SEMICOLON).shift())
-
-				if (blck.startsWith(ICSSStatments.FONT_FACE))
-					this.fontface(blck.split(ICSS.BLOCK.END).shift())
-
-				if (blck.startsWith(ICSSStatments.KEYFRAME))
-					this.keyframe(blck.split(ICSS.BLOCK.DOUBLE_END).shift())
-				
-				if (blck.startsWith(ICSSStatments.MEDIA))
-					this.media(blck.split(ICSS.BLOCK.DOUBLE_END).shift())
+				Object.entries(ICSSStatments).map(([key, stat]) => {
+					if (blck.startsWith(stat.KEY)) {
+						let stat_block = blck.split(stat.DELIMITER).shift()
+						this[key.toLowerCase()].call(this, stat_block)
+						this.css = this.css
+							.replace(`${ICSS.AT + stat_block + stat.DELIMITER}`, ICSS.EMPTY)
+					}
+				})
 			})
 
 		return this.css
@@ -46,7 +43,6 @@ const StatmentsParser = (Base) => class extends Base {
 		let [ url, where ] = b.replace(' ', '|').split('|').map(i => i.trim())
 
 		this.stats.imports.push(new ImportRule(url, where))
-		this.css = this.css.replace(`${ICSS.AT}${block};`, ICSS.EMPTY)
 	}
 	
 	/**
@@ -57,8 +53,7 @@ const StatmentsParser = (Base) => class extends Base {
 		let rules = block
 			.split(ICSS.BLOCK.BEGIN).pop().trim()
 		
-		this.stats.font_faces.push(new FontfaceRule(rules))
-		this.css = this.css.replace(`${ICSS.AT}${block}}`, ICSS.EMPTY)
+		this.stats.fontfaces.push(new FontfaceRule(rules))
 	}
 	
 	/**
@@ -71,7 +66,6 @@ const StatmentsParser = (Base) => class extends Base {
 			.replace(ICSS.BLOCK.BEGIN, '|').split('|').map(i => i.trim())
 
 		this.stats.keyframes.push(new KeyframeRule(name, blocks))
-		this.css = this.css.replace(`${ICSS.AT}${block}}}`, ICSS.EMPTY)
 	}
 	
 	/**
@@ -84,7 +78,6 @@ const StatmentsParser = (Base) => class extends Base {
 			.replace(ICSS.BLOCK.BEGIN, '|').split('|').map(i => i.trim())
 
 		this.stats.medias.push(new MediaRule(query, blocks))
-		this.css = this.css.replace(`${ICSS.AT}${block}}}`, ICSS.EMPTY)
 	}
 
 	/**
