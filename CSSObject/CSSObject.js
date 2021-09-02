@@ -1,4 +1,5 @@
 import CSSParser from "./CSSParser.js"
+import Stylesheet from "./parser/Stylesheet.js"
 
 
 /**
@@ -20,8 +21,10 @@ import CSSParser from "./CSSParser.js"
 		this.stylesheets = Object.values(document.styleSheets)
 			.map(sheet => sheet.ownerNode.innerText)
 			.filter(str => str != "")
+			.map((sheet) => new Stylesheet(sheet))
 		
-		this.stylesheets.map(css => this.parse(css))
+		this.stylesheets
+			.map(sheet => this.parse(sheet.css))
 
 		return this
 	}
