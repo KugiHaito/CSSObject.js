@@ -1,6 +1,7 @@
 import StatmentsParser from "./parser/StatmentsParser.js"
 import BlocksParser from "./parser/BlocksParser.js"
 import ParserBlock from "./parser/ParserBlock.js"
+import CommentBlock from "./parser/CommentBlock.js"
 import ICSS from "./enums/ICSS.js"
 
 
@@ -52,7 +53,7 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 				let comment = blck.split('*/').shift()
 
 				css = css.replace(`/*${comment}*/`, ICSS.EMPTY)
-				if (comment != "") this.comments.push(comment.trim())
+				if (comment != "") this.comments.push(new CommentBlock(comment.trim()))
 			})
 		
 		return css
