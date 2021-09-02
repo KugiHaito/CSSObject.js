@@ -45,9 +45,15 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 	 * @returns string
 	 */
 	clean(cssText) {
+		this.comments = []
 		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\t': ''})
 		css.split('/*')
-			.map(blck => css = css.replace(`/*${blck.split('*/')[0]}*/`, ICSS.EMPTY))
+			.map(blck => {
+				let comment = blck.split('*/').shift()
+
+				css = css.replace(`/*${comment}*/`, ICSS.EMPTY)
+				if (comment != "") this.comments.push(comment.trim())
+			})
 		
 		return css
 	}
