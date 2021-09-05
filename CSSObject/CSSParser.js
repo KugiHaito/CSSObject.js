@@ -47,7 +47,7 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 	 */
 	clean(cssText) {
 		this.comments = []
-		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\t': ''})
+		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\r': '', '\t': ''})
 		css.split('/*')
 			.map(blck => {
 				let comment = blck.split('*/').shift()

@@ -14,4 +14,5 @@ class CharsetRule {
 
 }
 
+
 export default CharsetRule
