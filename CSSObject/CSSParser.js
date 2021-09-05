@@ -36,7 +36,6 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 		this.blocks = rule_blocks
 			.map(b => this.block(b))
 
-		delete this.css
 		return this.blocks
 	}
 
