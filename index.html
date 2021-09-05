@@ -12,6 +12,27 @@
 		<style>
 
 			/* Local Stylesheet Example */
+			@charset "UTF-8";
+
+			:root {
+				--theme-color: #eb2300;
+			}
+
+			::-webkit-scrollbar {
+				width: 8px;
+				height: 5px;
+			}
+			::-webkit-scrollbar-track {
+				background-color: #fff;
+			}
+			::-webkit-scrollbar-thumb {
+				background: var(--theme-color);
+			}
+
+			::selection {
+				background: rgba(0, 0, 0, .3);
+			}
+
 			@import url("fineprint.css") print;
 			@import url("bluish.css") projection, tv;
 			@import 'custom.css';
@@ -24,6 +45,10 @@
 				padding: 0;
 				box-sizing: border-box;
 
+			}
+
+			#title {
+				font-weight: 600;
 			}
 
 			@keyframes example1 {
@@ -48,6 +73,24 @@
 
 			body {
 				padding: 20px 40px;
+			}
+
+			input:checked~div {
+				background: #e3e3e3;
+			}
+
+			input:checked~div:hover {
+				background: #5f5757;
+			}
+
+			input[class~='danger']:checked ~ div:hover {
+				background: red !important;
+			}
+
+			body p.warning {
+				color: yellow;
+				filter: hue-rotate(180deg) drop-shadow(8px 8px 0 green);
+				box-shadow: 8px 8px 0 0 green, 12px 12px 0 0 red;
 			}
 
 			@font-face {
@@ -92,7 +135,7 @@
 				}
 			}
 
-			@media only screen
+			@media only screen 
 			and (min-device-width: 320px) 
 			and (max-device-width: 480px) 
 			and (-webkit-min-device-pixel-ratio: 2) {
@@ -103,29 +146,49 @@
 
 			.btn {
 				color:white;
-				background: red;
+				background: var(--theme-color);
 				border-radius: 3px;
 				font-weight: 600;
 				margin: 5px;
 				padding: 5px 10px;
 				text-decoration: none;
 			}
+
+			.btn@click {
+				box-shadow: 0 0 5px red;
+			}
 			
 			.btn:focus {
-				background: url(data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7);
+				color: red;
+				background: url(data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7) no-repeat;
 			}
 
+			pre:hover {
+				transition: background-color 300ms linear 0s, transform 500ms ease-in-out 300ms;
+			}
+
+			pre::after, pre::before {
+				background: rgb(250, 119, 11);
+				/* content: ''; */
+				margin: 50px;
+				padding: 50px;
+			}
+
+			[data-span="lead"] {
+				border-bottom: 1px solid #5f5757;
+			}
+			[data-span="lead"]:hover, [data-span="lead"]:focus {
+				border-bottom: 1px solid var(--theme-color);
+			}
 		</style>
 	</head>
 	<body>
-		<h1>CSSObject.js</h1>
-		<span>A Parser CSS writed in Javascript Vanilla</span>
+		<h1 id="title">CSSObject.js</h1>
+		<span data-span="lead">A Parser CSS writed in Javascript Vanilla</span>
 		<a href="#!" class="btn">Don't Click</a>
-
+		<input class="input-red danger" type="checkbox" name="teste" id="teste">
 		<div class="cssobject">
-			<pre>
-				<code><!-- CSSObject --></code>
-			</pre>
+			<!-- CSSObject -->
 		</div>
 
 		<script src="./main.js" type="module"></script>
