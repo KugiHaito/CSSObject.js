@@ -42,11 +42,11 @@ const BlocksParser = (Base) => class extends Base {
 	 */
 	rules(rules) {
 		rules = this.dataURI(rules)
-		
 		return rules.split(ICSS.SEMICOLON)
-			.filter(r => r != "")
+			.filter(r => r.trim() != "")
 			.map(rule => {
 				let [ prop, value ] = rule.split(ICSS.DOTS).map(i => i.trim())
+				// console.log(prop, ' - ', value)
 				return new Rule(prop, ICSS.REGEX_REPLACE(value, ICSS.DATA_URI.VALUES))
 			})
 	}
