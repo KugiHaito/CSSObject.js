@@ -1,6 +1,7 @@
 import StatmentsParser from "./parser/StatmentsParser.js"
 import BlocksParser from "./parser/BlocksParser.js"
 import ParserBlock from "./parser/ParserBlock.js"
+import CommentBlock from "./parser/CommentBlock.js"
 import ICSS from "./enums/ICSS.js"
 
 
@@ -35,7 +36,6 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 		this.blocks = rule_blocks
 			.map(b => this.block(b))
 
-		delete this.css
 		return this.blocks
 	}
 
@@ -45,9 +45,15 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 	 * @returns string
 	 */
 	clean(cssText) {
-		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\t': ''})
+		this.comments = []
+		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\r': '', '\t': ''})
 		css.split('/*')
-			.map(blck => css = css.replace(`/*${blck.split('*/')[0]}*/`, ICSS.EMPTY))
+			.map(blck => {
+				let comment = blck.split('*/').shift()
+
+				css = css.replace(`/*${comment}*/`, ICSS.EMPTY)
+				if (comment != "") this.comments.push(new CommentBlock(comment.trim()))
+			})
 		
 		return css
 	}

@@ -7,6 +7,17 @@ import ICSS from "./ICSS.js"
  */
 const ICSSStatments = {
 
+	/** Charset CSS Statment */
+	CHARSET: {
+		
+		/** Charset Key */
+		KEY:'charset',
+
+		/** Charset Block Delimiter */
+		DELIMITER: ICSS.SEMICOLON,
+
+	},
+
 	/** Import CSS Statment */
 	IMPORT: {
 		

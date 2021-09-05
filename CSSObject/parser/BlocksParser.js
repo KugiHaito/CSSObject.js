@@ -1,5 +1,6 @@
 import ICSS from "../enums/ICSS.js"
 import Selector from "../queries/Selector.js"
+import BlockRule from "../rules/BlockRule.js"
 import Rule from "../rules/Rule.js"
 
 
@@ -17,11 +18,11 @@ const BlocksParser = (Base) => class extends Base {
 	 block(block) {
 		let [ query, rules ] = block.split(ICSS.BLOCK.BEGIN)
 
-		return {
+		return new BlockRule({
 			query: query.trim(),
 			selectors: this.selectors(query),
 			rules: this.rules(rules)
-		}
+		})
 	}
 
 	/**
