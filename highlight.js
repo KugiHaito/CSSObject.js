@@ -27,7 +27,6 @@ const JSONhighlight = {
 
 			if (value && !o) {
 				l = l.replace(value, this.HTML_VAL(value))
-				console.log(value)
 			}
 
 			if (key && key.trim().length < 25  && line.includes(':'))
