@@ -12,8 +12,9 @@ const JSONhighlight = {
 	HTML_BRACKET: (char) => `<span class="highlight-bracket">${char}</span>`,
 
 	use(query) {
-		let code = document.querySelector(query)
-		code.innerHTML = this.highlight(code.innerHTML)
+		Array.from(document.querySelectorAll(query)).forEach(code => {
+			code.innerHTML = this.highlight(code.innerHTML)
+		})
 	},
 
 	highlight(code) {
