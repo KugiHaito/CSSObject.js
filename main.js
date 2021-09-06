@@ -16,9 +16,9 @@ const printJSON = (style) => {
 // instance css object
 let cssobj = new CSSObject()
 
-// get local stylesheets
-cssobj.local(style => printJSON(style))
-
-// get external stylesheets
-cssobj.options({ load_min: false })
+// set options
+cssobj.options({ load_min: false, ignore_files: ['demo.css'] })
+	// get external stylesheets
 	.external(style => printJSON(style))
+	// get local stylesheets
+	.local(style => printJSON(style))

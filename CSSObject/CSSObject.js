@@ -66,6 +66,7 @@ import Stylesheet from "./parser/Stylesheet.js"
 		})
 
 		if (styles.length > 0) callback(styles)
+		return this
 	}
 
 	/**
@@ -78,6 +79,8 @@ import Stylesheet from "./parser/Stylesheet.js"
 				this.__external(sheet.href, callback)
 			}
 		})
+		
+		return this
 	}
 
 	/**
