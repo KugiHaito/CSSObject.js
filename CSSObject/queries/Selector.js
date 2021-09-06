@@ -27,7 +27,7 @@ import Pseudo from "../queries/Pseudo.js"
 	 */
 	type(value) {
 		Object.entries(ISelector).map(([selector, char]) => {
-			if (value.substr(0, 3).replace(/[0-9a-z-]+/g, '') == char)
+			if (value.substr(0, 3).replace(/[0-9a-z-_]+/g, '') == char)
 				this.type = selector
 
 			if (char == ISelector.ToKeyframeSelector || char == ISelector.FromKeyframeSelector) 
@@ -58,7 +58,7 @@ import Pseudo from "../queries/Pseudo.js"
 	 */
 	pseudo(value) {
 		let selct = value.replace(ISelector[this.type], ICSS.EMPTY)
-		let tag = selct.replace(/[a-z*+^~$=|\'\'\"\"\[\]-]+/, '')
+		let tag = selct.replace(/[0-9a-z-_*+^~$=|\'\'\"\"\[\]]+/, '')
 		let sign = tag.substr(0, 2).replace(/[a-z-]/g, '')
 		if (ICSS.PSEUDO.KEYS.includes(sign)) this.pseudo = new Pseudo(tag)
 	}
