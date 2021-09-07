@@ -29,6 +29,8 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 	 * @param {string} style_text css style text
 	 */
 	parse(style) {
+		this.comment(style)
+		
 		this.css = this.clean(style)
 		let rule_blocks = this.statments()
 			.split(ICSS.BLOCK.END);rule_blocks.pop()
@@ -39,21 +41,36 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 		return this.blocks
 	}
 
+	comment(cssText) {
+		this.comments = []
+		let blck = []
+
+		cssText.split('\n').forEach((l, i) => {
+			let line = ICSS.REGEX_REPLACE(l, {'\n': '', '\r': '', '\t': ''})
+			let n = ++i
+
+			if (line.includes(ICSS.COMMENT.BEGIN)) {
+				if (line.includes(ICSS.COMMENT.END)) {
+					this.comments.push(new CommentBlock(line, n))
+				} else { blck.push({line, n}) }
+			} else if (blck.length > 0) {
+				if (line.includes(ICSS.COMMENT.END)) {
+					let lines = blck.map(i => i.line).join("")
+					this.comments.push(new CommentBlock(lines, blck.map(i => i.n)))
+					blck = []
+				} else { blck.push({line, n}) }
+			}
+		})
+	}
+
 	/**
 	 * clean code css
 	 * remove comments, breaklines and tabs
 	 * @returns string
 	 */
 	clean(cssText) {
-		this.comments = []
 		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\r': '', '\t': ''})
-		css.split('/*')
-			.map(blck => {
-				let comment = blck.split('*/').shift()
-
-				css = css.replace(`/*${comment}*/`, ICSS.EMPTY)
-				if (comment != "") this.comments.push(new CommentBlock(comment.trim()))
-			})
+		this.comments.map(c => css = css.replace(c.toString(), ICSS.EMPTY))
 		
 		return css
 	}

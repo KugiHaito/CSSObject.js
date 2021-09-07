@@ -14,7 +14,6 @@ import Stylesheet from "./parser/Stylesheet.js"
 	 */
 	constructor(options = {}) {
 		this.options(options)
-		this.stylesheets = []
 
 		return this
 	}
