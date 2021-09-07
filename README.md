@@ -1,6 +1,6 @@
-<!-- CSSObject.js - Logo
-<img width="80%" src="https://user-images.githubusercontent.com/22013212/132142929-a295afaa-97b4-41a0-9f88-6fce2a88bf01.png"> 
--->
+<!-- CSSObject.js - Logo -->
+<img width="80%" src="https://user-images.githubusercontent.com/22013212/132287933-7e309afa-35df-445e-b4d4-770f04c2956d.png">
+
 
 <!-- Title and description -->
 # CSSObject.js
@@ -26,9 +26,7 @@ This project was started from the idea of reading CSS files, to implement an alt
 In your html, use `type="module"` in `<script>` tag:
 
 ```html
-
 <script src="./main.js" type="module"></script>
-
 ```
 _still working on a minified version, to don't need to use module type_
 
@@ -53,13 +51,11 @@ cssobj.external(style => {
   // parsed external style!
   console.log(style)
 })
-
 ```
 _the external method use a callback in promise, so it has a short call delay..._
 
 You can use the method `.options()`, to filter external stylesheets
 ```javascript
-
 cssobj.options({
   load_min: false, // '.min.css' (default is `true`)
   ignore_files: [], // ignored if `only_files` not empty
@@ -67,7 +63,6 @@ cssobj.options({
 }).external(style => {
   // your code...
 })
-
 ```
 the `options` object can also be passed in **CSSObject** constructor, and haven't effect for local stylesheets
 
@@ -94,6 +89,7 @@ see about this statments and others [at-rules here](https://developer.mozilla.or
 #### Others
 | Data URI | `data:[<media-type>];[base64],<data>` | ✅ |
 | --- | --- | --- |
+| Comment | `/*<text>*/` | ✅ |
 
 <!-- Structure Project and Folders -->
 ## Structure
@@ -189,8 +185,8 @@ BlockRule:
 ```yml
 CommentBlock:
   text: string
-  line: number
-  comment: string # comment text (without spaces)
+  comment: string # like `text` property (without break-lines and spaces)
+  line: number | number[]
 ```
 
 #### Rule
