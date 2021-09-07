@@ -13,7 +13,7 @@ A Parser CSS in Javascript Vanilla
 - [Structure](#structure)
 	- [Project Structure](#project-structure)
 	- [CSSObject Structure](#cssobject-structure)
-- [Be a Contribuitor!](#be-a-contribuitor)
+- [Be a Contributor!](#be-a-contributor)
 
 <!-- Overview -->
 ## Overview
@@ -127,6 +127,8 @@ CSSObject:
     ImportRule.js
     KeyframeRule.js
     Rule.js
+  CSSObject.js
+  CSSParser.js
 example.css # example css code
 index.html
 main.js # usage of `CSSObject.js`
@@ -186,7 +188,9 @@ BlockRule:
 ##### Comment Block
 ```yml
 CommentBlock:
-  block: string
+  text: string
+  line: number
+  comment: string # comment text (without spaces)
 ```
 
 #### Rule
@@ -211,7 +215,7 @@ ImportRule:
   where: string[] # may contains Rule object
 ```
 
-#### Font Face Rule
+##### Font Face Rule
 ```yml
 FontFaceRule:
   name: string # `font-family` value
@@ -253,7 +257,7 @@ Selector:
 _the type **PseudoEvent** is a custom support of CSSObject not has on CSS language_
 
 
-## Be a Contribuitor
+## Be a Contributor
 
 - This project was plan, writted and develop by [Kugi Haito](https://github.com/KugiHaito) 🍪
 - Did you like my project? give _star_ or _fork_ to help, thanks 😁
