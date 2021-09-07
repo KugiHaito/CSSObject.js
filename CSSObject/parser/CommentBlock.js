@@ -12,28 +12,20 @@ class CommentBlock {
 	 * @param {string} block
 	 */
 	constructor(block, line) {
-		this.block = block
-		this.line = line
+		this.block = {block, line}
 
 		return this
 	}
 
 	/**
 	 * set text comment
-	 * @property text
 	 * @param {string} value
 	 */
-	set block(value) {
-		this.text = value.replace(/[*/]/g, "")
-	}
-
-	/**
-	 * get comment (without spaces)
-	 * @property comment
-	 * @returns string
-	 */
-	get comment() {
-		return this.text.trim()
+	set block({block, line}) {
+		this.line = line
+		this.text = block.replace(/[/*][*/]/g, "")
+		this.comment = this.text.trim()
+			.replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
 	}
 
 	/**
@@ -41,7 +33,8 @@ class CommentBlock {
 	 * @returns string
 	 */
 	toString() {
-		return `${ICSS.COMMENT.BEGIN + this.text + ICSS.COMMENT.END}`
+		let comment = this.text.replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
+		return `${ICSS.COMMENT.BEGIN + comment + ICSS.COMMENT.END}`
 	}
 
 }

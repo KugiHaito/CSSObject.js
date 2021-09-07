@@ -46,7 +46,7 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 		let blck = []
 
 		cssText.split('\n').forEach((l, i) => {
-			let line = ICSS.REGEX_REPLACE(l, {'\n': '', '\r': '', '\t': ''})
+			let line = ICSS.REGEX_REPLACE(l, {'\r': '', '\t': ''})
 			let n = ++i
 
 			if (line.includes(ICSS.COMMENT.BEGIN)) {
@@ -55,8 +55,9 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 				} else { blck.push({line, n}) }
 			} else if (blck.length > 0) {
 				if (line.includes(ICSS.COMMENT.END)) {
-					let lines = blck.map(i => i.line).join("")
-					this.comments.push(new CommentBlock(lines, blck.map(i => i.n)))
+					blck.push({line, n})
+					this.comments.push(
+						new CommentBlock(blck.map(i => i.line).join("\n"), blck.map(i => i.n)))
 					blck = []
 				} else { blck.push({line, n}) }
 			}
