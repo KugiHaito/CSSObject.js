@@ -25,6 +25,16 @@ const ICSS = {
 	/** Important Rule Character */
 	IMPORTANT: '!',
 
+	/** Comment Block Characters */
+	COMMENT: {
+		
+		/** Begin Comment Block Index */
+		BEGIN: '/*',
+		
+		/** End Comment Block Index */
+		END: '*/'
+	},
+
 	/** Block Characters */
 	BLOCK: {
 
