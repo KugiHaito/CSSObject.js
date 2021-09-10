@@ -2,6 +2,7 @@ import StatmentsParser from "./parser/StatmentsParser.js"
 import BlocksParser from "./parser/BlocksParser.js"
 import ParserBlock from "./parser/ParserBlock.js"
 import CommentBlock from "./parser/CommentBlock.js"
+import VariableRule from "./rules/VariableRule.js"
 import ICSS from "./enums/ICSS.js"
 
 
@@ -38,9 +39,31 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 		this.blocks = rule_blocks
 			.map(b => this.block(b))
 
+		this.variables = []
+		this.blocks.map(b => {
+			let rules = b.rules.filter(r => r.prop.startsWith(ICSS.VARIABLE))
+			if (rules.length > 0)
+				rules.map(r => this.variables.push(new VariableRule(r.prop, r.value, b.query)))
+		})
+		Object.entries(this.statments).map(([stat, statrules]) => {
+			statrules.map(blcks => {
+				if (blcks.blocks) blcks.blocks.map(b => {
+					let rules = b.rules.filter(r => r.prop.startsWith(ICSS.VARIABLE))
+					if (rules.length > 0) rules.map(r => {
+						this.variables.push(new VariableRule(r.prop, r.value, b.query, stat))
+					})
+					// }
+				})
+			})
+		})
+
 		return this.blocks
 	}
 
+	/**
+	 * get comments block
+	 * @param {string} cssText 
+	 */
 	comment(cssText) {
 		this.comments = []
 		let blck = []

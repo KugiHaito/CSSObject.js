@@ -2,6 +2,7 @@ import ICSS from "../enums/ICSS.js"
 import Selector from "../queries/Selector.js"
 import BlockRule from "../rules/BlockRule.js"
 import Rule from "../rules/Rule.js"
+import VariableRule from "../rules/VariableRule.js"
 
 
 /**
@@ -49,6 +50,35 @@ const BlocksParser = (Base) => class extends Base {
 				let [ prop, value ] = rule.split(ICSS.DOTS).map(i => i.trim())
 				return new Rule(prop, ICSS.REGEX_REPLACE(value, ICSS.DATA_URI.VALUES))
 			})
+	}
+
+	/**
+	 * get variables of blocks
+	 * @param {array} blocks
+	 * @param {object} statments
+	 * @returns VariableRule[]
+	 */
+	variables(blocks, statments) {
+		let variables = []
+
+		blocks.map(b => {
+			let rules = b.rules.filter(r => r.prop.startsWith(ICSS.VARIABLE))
+			if (rules.length > 0)
+				rules.map(r => variables.push(new VariableRule(r.prop, r.value, b.query)))
+		})
+
+		Object.entries(statments).map(([stat, statrules]) => {
+			statrules.map(blcks => {
+				if (blcks.blocks) blcks.blocks.map(b => {
+					let rules = b.rules.filter(r => r.prop.startsWith(ICSS.VARIABLE))
+					if (rules.length > 0) rules.map(r => {
+						variables.push(new VariableRule(r.prop, r.value, b.query, stat))
+					})
+				})
+			})
+		})
+
+		return variables
 	}
 
 	/**

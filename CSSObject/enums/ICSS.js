@@ -25,6 +25,9 @@ const ICSS = {
 	/** Important Rule Character */
 	IMPORTANT: '!',
 
+	/** Variable Index Characters */
+	VARIABLE: '--',
+
 	/** Comment Block Characters */
 	COMMENT: {
 		
