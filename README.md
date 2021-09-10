@@ -138,6 +138,7 @@ See below, the objects and their properties that are returned
   - [BlockRule](#block-rule)
   - [CommentBlock](#comment-block)
 - [Rule](#rule)
+  - [VariableRule](#variable-rule)
   - [CharsetRule](#charset-rule)
   - [ImportRule](#import-rule)
   - [FontFaceRule](#font-face-rule)
@@ -164,6 +165,7 @@ Stylesheet:
   css: string # clean string (without break-lines and spaces)
   comments: CommentBlock[]
   blocks: BlockRule[]
+  variables: VariableRule[]
   statments: {
     charsets: CharsetRule[],
     imports: ImportRule[],
@@ -196,6 +198,16 @@ Rule:
   value: string | string[] | object # object represents a function, like `url(...)`
   prop: string # alias to `property`
   isImportant: boolean
+```
+
+##### Variable Rule
+```yml
+VariableRule:
+  name: string
+  value: string | string[] | object # object represents a function 
+  # {func: string, value: string | string[]}
+  scope: string
+  statment: string
 ```
 
 ##### Charset Rule
