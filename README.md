@@ -1,5 +1,5 @@
 <!-- CSSObject.js - Logo -->
-<img width="80%" src="https://user-images.githubusercontent.com/22013212/132287933-7e309afa-35df-445e-b4d4-770f04c2956d.png">
+<img width="80%" src="https://user-images.githubusercontent.com/22013212/132960807-2afde61b-d873-413d-834b-778918b04caf.png">
 
 
 <!-- Title and description -->
@@ -123,6 +123,7 @@ CSSObject:
     ImportRule.js
     KeyframeRule.js
     Rule.js
+    VariableRule.js
   CSSObject.js
   CSSParser.js
 example.css # example css code
