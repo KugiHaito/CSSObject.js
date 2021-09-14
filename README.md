@@ -123,6 +123,8 @@ CSSObject:
     FunctionRule.js
     ImportRule.js
     KeyframeRule.js
+    MediaRule.js
+    QuerieRule.js
     Rule.js
     VariableRule.js
   CSSObject.js
@@ -147,6 +149,7 @@ See below, the objects and their properties that are returned
   - [FontFaceRule](#font-face-rule)
   - [KeyframeRule](#keyframe-rule)
   - [MediaRule](#media-query-rule)
+  - [QuerieRule](#querie-rule)
 - [Selector](#selector)
     - [Pseudo](#pseudo)
 
@@ -251,9 +254,17 @@ KeyframeRule:
 ```yml
 MediaRule:
   query: string
-  queries: object[] # each object is a media querie, ex:
-  # {not: boolean, only: boolean, types: string[], rules: Rule[]}
+  queries: QuerieRule[]
   blocks: BlockRule[]
+```
+
+##### Querie Rule
+```yml
+QuerieRule:
+  rules: Rule[]
+  types: string[]
+  only: boolean
+  not: boolean
 ```
 
 #### Selector

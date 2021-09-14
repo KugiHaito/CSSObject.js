@@ -3,6 +3,7 @@ import ICSS from "../enums/ICSS.js"
 import IMedia from "../enums/IMedia.js"
 import ParserBlock from "../parser/ParserBlock.js"
 import BlocksParser from "../parser/BlocksParser.js"
+import QuerieRule from "./QuerieRule.js"
 
 
 /**
@@ -35,7 +36,7 @@ class MediaRule extends BlocksParser(ParserBlock) {
 		this.query = value
 		this.queries = this.query.split(ICSS.COMMA)
 			.map(qrie => {
-				let mediaQuerie = {types: [], rules: [], only: false, not: false}
+				let mediaQuerie = {rules: [], types: [], only: false, not: false}
 
 				qrie.split(/and+(\s+\([^)]*\))?/g)
 					.map(i => i.trim()).filter(i => i != '')
@@ -61,7 +62,7 @@ class MediaRule extends BlocksParser(ParserBlock) {
 							mediaQuerie.types.push(rule)
 				})
 
-				return { ...mediaQuerie }
+				return new QuerieRule(mediaQuerie)
 			})
 	}
 
