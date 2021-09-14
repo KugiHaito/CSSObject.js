@@ -1,4 +1,5 @@
 import ICSS from "../enums/ICSS.js"
+import FunctionRule from "./FunctionRule.js"
 
 
 /**
@@ -54,8 +55,8 @@ class Rule {
 	 * @returns string[]
 	 */
 	values(values) {
-		if (values.includes(ICSS.BRACKET.BEGIN)) {			
-			let params = values.split(ICSS.BRACKET.BEGIN).filter(v => v.includes(')')).map(v => v.split(')').shift())
+		if (values.includes(ICSS.BRACKET.BEGIN)) {
+			let params = this.__bracketParams(values)
 			let val = params.reduce((a, p, i) => a.replace(`(${p})`, `#${i}`), values)
 			let v = val.split(val.includes(ICSS.COMMA)? ICSS.COMMA:" ")
 
@@ -71,18 +72,21 @@ class Rule {
 	 * @param {string} values
 	 */
 	value(values) {
+		if (this.__bracketParams(values).length > 1)
+			return this.values(values)
+
 		 if (values.includes(ICSS.BRACKET.END)) {
-			let val = values.replace(ICSS.BRACKET.END, '')
-			let [ func, value ] = val.split(ICSS.BRACKET.BEGIN).map(v => v.trim())
+			let val = values.replace(/[)]/g, '')
+			let [ name, value ] = val.split(/\((.+)/).map(v => v.trim())
 			value = this.important(value)
 				.split(value.includes(ICSS.COMMA)? ICSS.COMMA:" ")
 				.filter(v => v != ICSS.EMPTY).map(v => v.trim())
 
-			return { func, value }
+			return new FunctionRule(name, value)
 		}
 
-		let value = this.important(values).split(ICSS.COMMA).map(v => v.trim())
-		return value.length > 1 ? value:value.pop()
+		let val = this.important(values).split(ICSS.COMMA).map(v => v.trim())
+		return val.length > 1 ? val:val.pop()
 	}
 
 	important(value) {
@@ -90,6 +94,30 @@ class Rule {
 		this.isImportant = (i.length > 1)? true:false
 
 		return (this.isImportant)? i.shift().trim():value
+	}
+
+	/**
+	 * get string between main brackets
+	 * @param {string} string 
+	 * @returns string[]
+	 */
+	 __bracketParams(string) {
+		let b = false, bb = [], params = []
+		string.split("").reduce((a, l) => {
+			if (l == ")" && bb.length == 0) b = false
+			if (b) a += l
+			if (l == "(" && b == true) bb.push("(")
+			if (l == "(") b = true
+			if (l == ")" && bb.length > 0) bb.pop()
+			if (l == ")" && bb.length == 0 && b == false) {
+				params.push(a)
+				a = ICSS.EMPTY
+			}
+
+			return a 
+		}, ICSS.EMPTY)
+
+		return params
 	}
 }
 
