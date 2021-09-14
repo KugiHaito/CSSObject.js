@@ -98,7 +98,7 @@ import Stylesheet from "./parser/Stylesheet.js"
 		return await (fetch(link))
 			.then(res => res.text())
 			.then(css => callback(new Stylesheet(css, filename)))
-			.catch(err => console.log("Error on load external stylesheet: ", err))
+			.catch(err => console.error(err))
 
 	}
 }
