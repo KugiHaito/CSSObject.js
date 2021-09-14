@@ -120,6 +120,7 @@ CSSObject:
     BlockRule.js
     CharsetRule.js
     FontfaceRule.js
+    FunctionRule.js
     ImportRule.js
     KeyframeRule.js
     Rule.js
@@ -140,6 +141,7 @@ See below, the objects and their properties that are returned
   - [CommentBlock](#comment-block)
 - [Rule](#rule)
   - [VariableRule](#variable-rule)
+  - [FunctionRule](#function-rule)
   - [CharsetRule](#charset-rule)
   - [ImportRule](#import-rule)
   - [FontFaceRule](#font-face-rule)
@@ -209,6 +211,13 @@ VariableRule:
   # {func: string, value: string | string[]}
   scope: string
   statment: string
+```
+
+##### Function Rule
+```yml
+FunctionRule:
+  name: string
+  value: string | string[] # may contains FunctionRule object
 ```
 
 ##### Charset Rule

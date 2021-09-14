@@ -3,6 +3,7 @@
 
 :root {
 	--theme-color: #eb2300;
+	--my-height: 1.2;
 }
 
 ::-webkit-scrollbar {
@@ -103,8 +104,10 @@ p, span {color: #212121;margin: 5px 0;}
 }
 
 @media screen, print {
-	body { 
-		line-height: 1.2;
+	body {
+		--my-height: 1.2;
+		line-height: var(--my-height);
+		line-height: calc(var(--my-height) - 0.2);
 	}
 }
 
