@@ -79,7 +79,7 @@ class Rule {
 			let val = values.replace(/[)]/g, '')
 			let [ name, value ] = val.split(/\((.+)/).map(v => v.trim())
 			value = this.important(value)
-				.split(value.includes(ICSS.COMMA)? ICSS.COMMA:" ")
+				.split(!value.startsWith(ICSS.DATA_URI.KEY) && value.includes(ICSS.COMMA) ? ICSS.COMMA:" ")
 				.filter(v => v != ICSS.EMPTY).map(v => v.trim())
 
 			return new FunctionRule(name, value)
