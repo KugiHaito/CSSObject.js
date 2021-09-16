@@ -1,7 +1,7 @@
 {
     "name": "cssobjectjs",
-    "version": "1.4.1",
-    "description": "A CSS Parser in Javascript Vanilla",
+    "version": "1.4.2",
+    "description": "A Parser CSS in Javascript Vanilla",
     "keywords": [
         "css-parse",
         "javascript-parser",
@@ -10,13 +10,13 @@
     "author": "KugiHaito",
     "license": "MIT",
 
-    "main": "main.js",
+    "main": "cssobject.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build-dev": "webpack --mode development",
         "build": "webpack --mode production"
     },
-    
+
     "repository": {
         "type": "git",
         "url": "git+https://github.com/KugiHaito/CSSObject.js.git"
@@ -27,8 +27,8 @@
     "homepage": "https://github.com/KugiHaito/CSSObject.js#readme",
 
     "devDependencies": {
-        "terser-webpack-plugin": "^5.2.4",
         "webpack": "^5.52.1",
-        "webpack-cli": "^4.8.0"
+        "webpack-cli": "^4.8.0",
+        "terser-webpack-plugin": "^5.2.4"
     }
 }
