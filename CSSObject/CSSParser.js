@@ -47,10 +47,10 @@ class CSSParser extends StatmentsParser(BlocksParser(ParserBlock)) {
 	 * @returns string
 	 */
 	clean(cssText) {
-		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\r': '', '\t': ''})
+		let css = ICSS.REGEX_REPLACE(cssText, {'\n': '', '\r': '', '\t': '', '  ': ''})
 		this.comments.map(c => css = css.replace(c.toString(), ICSS.EMPTY))
 		
-		return css
+		return css.trim()
 	}
 }
 
