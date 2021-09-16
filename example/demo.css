@@ -1,0 +1,19 @@
+/* Demo CSS file - example code */
+.demo {
+    display: flex;
+}
+
+.demo .item {
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.demo .item:hover {
+    background: rgba(0, 0, 0, .2);
+}
+
+.demo .item:focus,
+.demo .item.selected {
+    background-color: rgba(0, 0, 0, .8);
+    color: #FFF;
+}

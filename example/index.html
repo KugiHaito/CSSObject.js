@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="author" content="Kugi Haito <kugihaito99@gmail.com>">
+        <meta name="description" content="A Parser for CSS in Javascript Vanilla">
+        <meta name="keywords" content="css, cssobject, parser, parsercss, js, parserjs">
+        <title>CSSObject.js | KugiHaito</title>
+        <link rel="stylesheet" href="./example.css">
+        <style>
+            /* Local Stylesheet Example */
+            .card {
+                width: 100%;
+                display: flex;
+                padding: 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+            }
+
+            .card > .title {
+                font-size: 18px;
+            }
+
+            .card > .description,
+            .card > p {
+                font-size: 14px;
+                font-weight: 300;
+            }
+
+            /* CSS Object JSON code */
+            .cssobject {
+                padding: 10px 20px;
+            }
+
+            .cssobject pre {
+                background-color: lightgray;
+                font-size: 12px;
+                margin: 20px 0;
+                padding: 20px;
+                overflow-x: auto;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="title">CSSObject.js</h1>
+        <span data-span="lead">A Parser CSS writed in Javascript Vanilla</span>
+        <a href="#!" class="btn">Don't Click</a>
+        <input class="input-red danger" type="checkbox" name="teste" id="teste">
+        <div class="cssobject">
+            <!-- CSSObject -->
+        </div>
+
+
+        <!-- Full Usage Mode -->
+        <!-- <script type="module" src="./main.js"></script> -->
+
+        <!-- Fast Way -->
+        <script src="../cssobject.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // to show cssobj stylesheet on page
+            let div = document.querySelector('.cssobject')
+            const printJSON = (style) => {
+                // shows in console
+                console.log(style)
+
+                let cssjson = JSON.stringify(style, null, '    ')
+                let pre = document.createElement('pre'),
+                code = document.createElement('code')
+                code.innerText = cssjson
+                pre.appendChild(code)
+                div.appendChild(pre)
+            }
+
+            // instance css object
+            let cssobj = new CSSObject()
+
+            // set options
+            cssobj.options({ load_min: false, ignore_files: ['demo.css'] })
+                // get external stylesheets
+                .external(style => printJSON(style))
+                // get local stylesheets
+                .local(style => printJSON(style))
+
+        </script>
+    </body>
+</html>
