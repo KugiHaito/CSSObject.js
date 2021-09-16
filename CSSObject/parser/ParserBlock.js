@@ -4,7 +4,7 @@
  */
 class ParserBlock {
 
-	/** Base blank class to StamentsParser and BlocksParser */
+    /** Base blank class to StamentsParser and BlocksParser */
 
 }
 

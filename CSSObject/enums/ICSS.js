@@ -4,108 +4,108 @@
  */
 const ICSS = {
 
-	/** Empty Character */
-	EMPTY: '',
+    /** Empty Character */
+    EMPTY: '',
 
-	/** At Character */
-	AT: '@',
+    /** At Character */
+    AT: '@',
 
-	/** Dots Character */
-	DOTS: ':',
+    /** Dots Character */
+    DOTS: ':',
 
-	/** Comma Character */
-	COMMA: ',',
+    /** Comma Character */
+    COMMA: ',',
 
-	/** Semicolon Character */
-	SEMICOLON: ';',
+    /** Semicolon Character */
+    SEMICOLON: ';',
 
-	/** Break Line Character */
-	BREAK_LINE: '\n',
+    /** Break Line Character */
+    BREAK_LINE: '\n',
 
-	/** Important Rule Character */
-	IMPORTANT: '!',
+    /** Important Rule Character */
+    IMPORTANT: '!',
 
-	/** Variable Index Characters */
-	VARIABLE: '--',
+    /** Variable Index Characters */
+    VARIABLE: '--',
 
-	/** Comment Block Characters */
-	COMMENT: {
-		
-		/** Begin Comment Block Index */
-		BEGIN: '/*',
-		
-		/** End Comment Block Index */
-		END: '*/'
-	},
+    /** Comment Block Characters */
+    COMMENT: {
+        
+        /** Begin Comment Block Index */
+        BEGIN: '/*',
+        
+        /** End Comment Block Index */
+        END: '*/'
+    },
 
-	/** Block Characters */
-	BLOCK: {
+    /** Block Characters */
+    BLOCK: {
 
-		/** Begin Block Character */
-		BEGIN: '{',
-		
-		/** End Block Character */
-		END: '}',
+        /** Begin Block Character */
+        BEGIN: '{',
+        
+        /** End Block Character */
+        END: '}',
 
-		/** Double End Block Characters */
-		DOUBLE_END: '}}'
+        /** Double End Block Characters */
+        DOUBLE_END: '}}'
 
-	},
-	
-	/** Bracket Characters */
-	BRACKET: {
-		
-		/** Begin Bracket Character */
-		BEGIN: '(',
-		
-		/** End Bracket Character */
-		END: ')',
-		
-		/** End Rule Bracket Characters */
-		END_RULE: ');'
+    },
+    
+    /** Bracket Characters */
+    BRACKET: {
+        
+        /** Begin Bracket Character */
+        BEGIN: '(',
+        
+        /** End Bracket Character */
+        END: ')',
+        
+        /** End Rule Bracket Characters */
+        END_RULE: ');'
 
-	},
-	
-	/** Data URI Character */
-	DATA_URI: {
+    },
+    
+    /** Data URI Character */
+    DATA_URI: {
 
-		/** Data URI Index Character */
-		KEY: 'data:',
+        /** Data URI Index Character */
+        KEY: 'data:',
 
-		/** Data URI Characters (to replace) */
-		KEYS: {':': '=', ';': '&'},
+        /** Data URI Characters (to replace) */
+        KEYS: {':': '=', ';': '&'},
 
-		/** Data URI Characters (inverted keys) */
-		VALUES: {'=': ':', '&': ';'}
-	},
+        /** Data URI Characters (inverted keys) */
+        VALUES: {'=': ':', '&': ';'}
+    },
 
-	/** Pseudo Characters */
-	PSEUDO: {
+    /** Pseudo Characters */
+    PSEUDO: {
 
-		/** Pseudo Indexs Characters */
-		KEYS: [':', '::', '@'],
-		
-		/** Pseudo Class Character */
-		CLASS: ':',
-		
-		/** Pseudo Element Character */
-		ELEMENT: '::',
-		
-		/** Pseudo Event Character (custom pseudo type) */
-		EVENT: '@'
-	
-	},
-	
-	/** Regex to Commments Characters */
-	REGEX_COMMENTS: /\/\*(\r|\n|.)*\*\//g,
-	
-	/** Regex to Functions Characters */
-	REGEX_BRACKETS: /\(([^)]+)\)/,
+        /** Pseudo Indexs Characters */
+        KEYS: [':', '::', '@'],
+        
+        /** Pseudo Class Character */
+        CLASS: ':',
+        
+        /** Pseudo Element Character */
+        ELEMENT: '::',
+        
+        /** Pseudo Event Character (custom pseudo type) */
+        EVENT: '@'
+    
+    },
+    
+    /** Regex to Commments Characters */
+    REGEX_COMMENTS: /\/\*(\r|\n|.)*\*\//g,
+    
+    /** Regex to Functions Characters */
+    REGEX_BRACKETS: /\(([^)]+)\)/,
 
-	/** Regex Replace to CSS Characters */
-	REGEX_REPLACE: (str, obj) => {
-		return str.replace(new RegExp(Object.keys(obj).join('|'), 'g'), i => obj[i])
-	}
+    /** Regex Replace to CSS Characters */
+    REGEX_REPLACE: (str, obj) => {
+        return str.replace(new RegExp(Object.keys(obj).join('|'), 'g'), i => obj[i])
+    }
 
 }
 

@@ -4,35 +4,35 @@
  */
  const ISelector = {
 
-	/** Universal Selector */
-	UniversalSelector: "*",
+    /** Universal Selector */
+    UniversalSelector: "*",
 
-	/** Tag Selector Type */
-	TagSelector: "",
+    /** Tag Selector Type */
+    TagSelector: "",
 
-	/** ID Selector Type */
-	IDSelector: "#",
-	
-	/** Class Selector Type */
-	ClassSelector: ".",
-	
-	/** Attribute Selector Type */
-	AttrSelector: "[",
-	
-	/** Pseudo-Class Selector Type */
-	PseudoSelector: ":",
-	
-	/** Pseudo-Element Selector Type */
-	PseudoElementSelector: "::",
+    /** ID Selector Type */
+    IDSelector: "#",
+    
+    /** Class Selector Type */
+    ClassSelector: ".",
+    
+    /** Attribute Selector Type */
+    AttrSelector: "[",
+    
+    /** Pseudo-Class Selector Type */
+    PseudoSelector: ":",
+    
+    /** Pseudo-Element Selector Type */
+    PseudoElementSelector: "::",
 
-	/** Percentage Selector Type (Keyframe) */
-	PercentageSelector: "%",
+    /** Percentage Selector Type (Keyframe) */
+    PercentageSelector: "%",
 
-	/** From Keyframe Selector Type */
-	FromKeyframeSelector: "from",
+    /** From Keyframe Selector Type */
+    FromKeyframeSelector: "from",
 
-	/** To Keyframe Selector Type */
-	ToKeyframeSelector: "to"
+    /** To Keyframe Selector Type */
+    ToKeyframeSelector: "to"
 
 }
 

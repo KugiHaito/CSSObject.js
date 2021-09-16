@@ -7,60 +7,60 @@ import ICSS from "./ICSS.js"
  */
 const ICSSStatments = {
 
-	/** Charset CSS Statment */
-	CHARSET: {
-		
-		/** Charset Key */
-		KEY:'charset',
+    /** Charset CSS Statment */
+    CHARSET: {
+        
+        /** Charset Key */
+        KEY:'charset',
 
-		/** Charset Block Delimiter */
-		DELIMITER: ICSS.SEMICOLON,
+        /** Charset Block Delimiter */
+        DELIMITER: ICSS.SEMICOLON,
 
-	},
+    },
 
-	/** Import CSS Statment */
-	IMPORT: {
-		
-		/** Import Key */
-		KEY:'import',
+    /** Import CSS Statment */
+    IMPORT: {
+        
+        /** Import Key */
+        KEY:'import',
 
-		/** Import Block Delimiter */
-		DELIMITER: ICSS.SEMICOLON,
+        /** Import Block Delimiter */
+        DELIMITER: ICSS.SEMICOLON,
 
-	},
-	
-	/** Media Query CSS Statment */
-	MEDIA: {
-		
-		/** Media Key */
-		KEY:'media',
+    },
+    
+    /** Media Query CSS Statment */
+    MEDIA: {
+        
+        /** Media Key */
+        KEY:'media',
 
-		/** Media Block Delimiter */
-		DELIMITER: ICSS.BLOCK.DOUBLE_END,
+        /** Media Block Delimiter */
+        DELIMITER: ICSS.BLOCK.DOUBLE_END,
 
-	},
-	
-	/** Keyframe CSS Statment */
-	KEYFRAME: {
-		
-		/** Keyframe Key */
-		KEY:'keyframes',
+    },
+    
+    /** Keyframe CSS Statment */
+    KEYFRAME: {
+        
+        /** Keyframe Key */
+        KEY:'keyframes',
 
-		/** Keyframe Block Delimiter */
-		DELIMITER: ICSS.BLOCK.DOUBLE_END,
+        /** Keyframe Block Delimiter */
+        DELIMITER: ICSS.BLOCK.DOUBLE_END,
 
-	},
-	
-	/** FontFace CSS Statment */
-	FONTFACE: {
-		
-		/** FontFace Key */
-		KEY:'font-face',
+    },
+    
+    /** FontFace CSS Statment */
+    FONTFACE: {
+        
+        /** FontFace Key */
+        KEY:'font-face',
 
-		/** Font Block Delimiter */
-		DELIMITER: ICSS.BLOCK.END,
+        /** Font Block Delimiter */
+        DELIMITER: ICSS.BLOCK.END,
 
-	},
+    },
 
 }
 

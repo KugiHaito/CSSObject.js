@@ -9,24 +9,24 @@ import ICSS from "../enums/ICSS.js"
  */
 class KeyframeRule extends BlocksParser(ParserBlock) {
 
-	/**
-	 * Initialize KeyframeRule
-	 * @param {string} name animation name
-	 * @param {string} keyframe css blocks
-	 * @returns {KeyframeRule}
-	 */
-	constructor(name, keyframe) {
-		super()
+    /**
+     * Initialize KeyframeRule
+     * @param {string} name animation name
+     * @param {string} keyframe css blocks
+     * @returns {KeyframeRule}
+     */
+    constructor(name, keyframe) {
+        super()
 
-		this.name = name
-		this.keyframe = keyframe
-		return this
-	}
+        this.name = name
+        this.keyframe = keyframe
+        return this
+    }
 
-	set keyframe(values) {
-		let blcks = values.split(ICSS.BLOCK.END)
-		this.blocks = blcks.map(b => this.block(b.trim()))
-	}
+    set keyframe(values) {
+        let blcks = values.split(ICSS.BLOCK.END)
+        this.blocks = blcks.map(b => this.block(b.trim()))
+    }
 
 }
 

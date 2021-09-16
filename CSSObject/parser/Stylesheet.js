@@ -7,18 +7,18 @@ import CSSParser from "../CSSParser.js"
  */
 class Stylesheet extends CSSParser {
 
-	/**
-	 * Initialize Stylesheet
-	 * @param {string} stylesheet
-	 */
-	constructor(stylesheet, filename = null) {
-		super()
+    /**
+     * Initialize Stylesheet
+     * @param {string} stylesheet
+     */
+    constructor(stylesheet, filename = null) {
+        super()
 
-		this.cssText = stylesheet
-		this.filename = filename
-		this.parse(this.cssText)
-		return this
-	}
+        this.cssText = stylesheet
+        this.filename = filename
+        this.parse(this.cssText)
+        return this
+    }
 
 }
 

@@ -4,14 +4,14 @@
  */
 const IPseudo = {
 
-	/** Pseudo Class Type Index */
-	PseudoClass: ':',
+    /** Pseudo Class Type Index */
+    PseudoClass: ':',
 
-	/** Pseudo Element Type Index */
-	PseudoElement: '::',
+    /** Pseudo Element Type Index */
+    PseudoElement: '::',
 
-	/** Pseudo Event Type Index */
-	PseudoEvent: '@',
+    /** Pseudo Event Type Index */
+    PseudoEvent: '@',
 
 }
 

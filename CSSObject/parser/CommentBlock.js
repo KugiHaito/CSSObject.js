@@ -7,38 +7,38 @@ import ICSS from "../enums/ICSS.js"
  */
 class CommentBlock {
 
-	/**
-	 * Initialize CommentBlock
-	 * @param {string} block
-	 */
-	constructor(block, line) {
-		this.block = {block, line}
+    /**
+     * Initialize CommentBlock
+     * @param {string} block
+     */
+    constructor(block, line) {
+        this.block = {block, line}
 
-		return this
-	}
+        return this
+    }
 
-	/**
-	 * set text comment
-	 * @param {string} value
-	 */
-	set block({block, line}) {
-		this.line = line
-		this.text = block
-			.split(ICSS.COMMENT.BEGIN).pop()
-			.split(ICSS.COMMENT.END).shift()
-		
-		this.comment = this.text.trim()
-			.replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
-	}
+    /**
+     * set text comment
+     * @param {string} value
+     */
+    set block({block, line}) {
+        this.line = line
+        this.text = block
+            .split(ICSS.COMMENT.BEGIN).pop()
+            .split(ICSS.COMMENT.END).shift()
+        
+        this.comment = this.text.trim()
+            .replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
+    }
 
-	/**
-	 * get comment line with delimeters
-	 * @returns string
-	 */
-	toString() {
-		let comment = this.text.replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
-		return `${ICSS.COMMENT.BEGIN + comment + ICSS.COMMENT.END}`
-	}
+    /**
+     * get comment line with delimeters
+     * @returns string
+     */
+    toString() {
+        let comment = this.text.replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
+        return `${ICSS.COMMENT.BEGIN + comment + ICSS.COMMENT.END}`
+    }
 
 }
 

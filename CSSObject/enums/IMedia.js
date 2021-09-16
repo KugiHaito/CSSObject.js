@@ -4,22 +4,22 @@
  */
 const IMedia = {
 
-	/** Only or Not Media Query Operators */
-	ONLY_OR_NOT: ['only', 'not'],
+    /** Only or Not Media Query Operators */
+    ONLY_OR_NOT: ['only', 'not'],
 
-	/** Media Query Types */
-	MEDIA_TYPES: [
-		'all', // default
-		'tv',
-		'tty',
-		'aural',
-		'print',
-		'screen',
-		'braile',
-		'handheld',
-		'embossed',
-		'projection',
-	],
+    /** Media Query Types */
+    MEDIA_TYPES: [
+        'all', // default
+        'tv',
+        'tty',
+        'aural',
+        'print',
+        'screen',
+        'braile',
+        'handheld',
+        'embossed',
+        'projection',
+    ],
 
 }
 
