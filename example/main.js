@@ -1,10 +1,11 @@
 import CSSObject from "../CSSObject/CSSObject.js"
 
-
 // to show cssobj stylesheet on page
 let div = document.querySelector('.cssobject')
 const printJSON = (style) => {
+    // shows in console
     console.log(style)
+
     let cssjson = JSON.stringify(style, null, '    ')
     let pre = document.createElement('pre'),
     code = document.createElement('code')
