@@ -28,7 +28,7 @@
 				font-weight: 300;
 			}
 
-			/* css object */
+			/* CSS Object JSON code */
 			.cssobject {
 				padding: 10px 20px;
 			}
@@ -52,6 +52,32 @@
 			<!-- CSSObject -->
 		</div>
 
-		<script src="./main.js" type="module"></script>
+		<script src="./cssobject.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			// to show cssobj stylesheet on page
+			let div = document.querySelector('.cssobject')
+			const printJSON = (style) => {
+				// shows in console
+				console.log(style)
+
+				let cssjson = JSON.stringify(style, null, '    ')
+				let pre = document.createElement('pre'),
+				code = document.createElement('code')
+				code.innerText = cssjson
+				pre.appendChild(code)
+				div.appendChild(pre)
+			}
+
+			// instance css object
+			let cssobj = new CSSObject()
+
+			// set options
+			cssobj.options({ load_min: false, ignore_files: ['demo.css'] })
+				// get external stylesheets
+				.external(style => printJSON(style))
+				// get local stylesheets
+				.local(style => printJSON(style))
+
+		</script>
 	</body>
 </html>
