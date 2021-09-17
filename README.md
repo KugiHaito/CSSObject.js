@@ -1,6 +1,11 @@
 <!-- CSSObject.js - Logo -->
 <img width="80%" src="https://user-images.githubusercontent.com/22013212/132960807-2afde61b-d873-413d-834b-778918b04caf.png">
 
+<!-- Badges -->
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/KugiHaito/CSSObject.js?style=flat-square)
+![GitHub](https://img.shields.io/github/license/KugiHaito/CSSObject.js?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/KugiHaito/CSSObject.js?style=flat-square)
+![npm](https://img.shields.io/npm/v/cssobjectjs?color=red&style=flat-square)
 
 <!-- Title and description -->
 # CSSObject.js
@@ -8,11 +13,11 @@ A Parser CSS in Javascript Vanilla
 
 ## Summary
 - [Overview](#overview)
-	- [Usage](#usage)
-	- [Supports](#supports)
+    - [Usage](#usage)
+    - [Supports](#supports)
 - [Structure](#structure)
-	- [Project Structure](#project-structure)
-	- [CSSObject Structure](#cssobject-structure)
+    - [Project Structure](#project-structure)
+    - [CSSObject Structure](#cssobject-structure)
 - [Be a Contributor!](#be-a-contributor)
 
 <!-- Overview -->
@@ -20,15 +25,50 @@ A Parser CSS in Javascript Vanilla
 
 This project was started from the idea of reading CSS files, to implement an alternative functionality, which I call Pseudo-Event for dynamic styling of elements from CSS. Initially, it was just a gists, but as the code developed, the project expanded.
 
-
 ### Usage
+
+<!-- Simple Usage -->
+#### Simple Usage
+
+The fast way is using UNPKG link:
+
+```html
+<script src="https://unpkg.com/cssobjectjs@latest/cssobject.js"></script>
+```
+
+sample code:
+```javascript
+// normal
+const cssobj = new CSSObject()
+
+// get local stylesheets
+cssobj.local(style => {
+    // parsed local style!
+    console.log(style)
+})
+
+// get external stylesheets
+cssobj.external(style => {
+    // parsed external style!
+    console.log(style)
+})
+```
+
+or use alias `CSSObj` to **CSSObject** instance:
+```javascript
+// using alias
+CSSObj.options({load_min: false})
+  .local(style => console.log(style))
+  .external(style => console.log(style))
+```
+
 <!-- Usage with full code -->
+#### Full Usage Mode
 In your html, use `type="module"` in `<script>` tag:
 
 ```html
 <script src="./main.js" type="module"></script>
 ```
-_still working on a minified version, to don't need to use module type_
 
 In `main.js` you can use CSSObject to get local stylesheets, styles inside `<style>` tag in your HTML, or external stylesheets _(link)_, 
 see:
@@ -59,9 +99,9 @@ You can use the method `.options()`, to filter external stylesheets
 cssobj.options({
   load_min: false, // '.min.css' (default is `true`)
   ignore_files: [], // ignored if `only_files` not empty
-  only_files: [] 
+  only_files: []
 }).external(style => {
-  // your code...
+  console.log(style)
 })
 ```
 the `options` object can also be passed in **CSSObject** constructor, and haven't effect for local stylesheets
@@ -201,7 +241,7 @@ CommentBlock:
 ```yml
 Rule:
   property: string
-  value: string | string[] | object # object represents a function, like `url(...)`
+  value: string | string[] | FunctionRule
   prop: string # alias to `property`
   isImportant: boolean
 ```
@@ -210,8 +250,7 @@ Rule:
 ```yml
 VariableRule:
   name: string
-  value: string | string[] | object # object represents a function 
-  # {func: string, value: string | string[]}
+  value: string | string[] | FunctionRule
   scope: string
   statment: string
 ```
