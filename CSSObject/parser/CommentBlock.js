@@ -24,9 +24,6 @@ class CommentBlock {
     set block({block, line}) {
         this.line = line
         this.text = block
-            .split(ICSS.COMMENT.BEGIN).pop()
-            .split(ICSS.COMMENT.END).shift()
-        
         this.comment = this.text.trim()
             .replaceAll(ICSS.BREAK_LINE, ICSS.EMPTY)
     }

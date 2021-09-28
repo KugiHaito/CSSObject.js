@@ -90,6 +90,14 @@ const BlocksParser = (Base) => class extends Base {
      comment(cssText) {
         let comments = []
         let comment_block = []
+        const commentblck = (text, line) => {
+            text.split(ICSS.COMMENT.BEGIN)
+                .filter(i => i.trim() != ICSS.EMPTY)
+                .forEach(c => {
+                    let comment = c.split(ICSS.COMMENT.END).shift()
+                    comments.push(new CommentBlock(comment, line))
+                })
+        }
 
         cssText.split('\n').forEach((l, i) => {
             let comment = ICSS.REGEX_REPLACE(l, {'\r': '', '\t': ''})
@@ -97,13 +105,12 @@ const BlocksParser = (Base) => class extends Base {
 
             if (comment.includes(ICSS.COMMENT.BEGIN)) {
                 if (comment.includes(ICSS.COMMENT.END)) {
-                    comments.push(new CommentBlock(comment, line))
+                    commentblck(comment, line)
                 } else { comment_block.push({comment, line}) }
             } else if (comment_block.length > 0) {
                 if (comment.includes(ICSS.COMMENT.END)) {
                     comment_block.push({comment, line})
-                    comments.push(
-                        new CommentBlock(comment_block.map(i => i.line).join("\n"), comment_block.map(i => i.n)))
+                    commentblck(comment_block.map(i => i.line).join("\n"), comment_block.map(i => i.n))
                     comment_block = []
                 } else { comment_block.push({comment, line}) }
             }

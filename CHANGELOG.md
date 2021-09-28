@@ -3,6 +3,10 @@ CSSObject.js: A parser CSS in javascript vanilla
 
 ## [Unreleased]
 
+### Added
+- Support to many comments in one line
+
+
 ## [1.4.2] - 2021-09-12
 
 ### Changed
