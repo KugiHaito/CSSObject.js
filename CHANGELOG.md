@@ -3,6 +3,9 @@ CSSObject.js: A parser CSS in javascript vanilla
 
 ## [Unreleased]
 
+### Changed
+- file `cssobject.js` to ES5 bundle
+
 ### Added
 - Support to many comments in one line
 
