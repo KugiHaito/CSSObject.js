@@ -8,7 +8,7 @@
     UniversalSelector: "*",
 
     /** Tag Selector Type */
-    TagSelector: "",
+    HTMLSelector: "",
 
     /** ID Selector Type */
     IDSelector: "#",
