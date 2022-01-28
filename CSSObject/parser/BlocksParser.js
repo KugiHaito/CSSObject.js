@@ -47,6 +47,8 @@ const BlocksParser = (Base) => class extends Base {
         
         return rules.split(ICSS.SEMICOLON)
             .filter(r => r.trim() != ICSS.EMPTY)
+            .filter(r => !r.includes(ICSS.BRACKET.EMPTY))
+            .filter(r => !r.split(ICSS.DOTS).map(i => i.trim()).includes(ICSS.EMPTY))
             .map(rule => {
                 let [ prop, value ] = rule.split(ICSS.DOTS).map(i => i.trim())
                 return new Rule(prop, ICSS.REGEX_REPLACE(value, ICSS.DATA_URI.VALUES))

@@ -60,6 +60,9 @@ const ICSS = {
         
         /** End Bracket Character */
         END: ')',
+
+        /** Empty Brackets Characters */
+        EMPTY: '()',
         
         /** End Rule Bracket Characters */
         END_RULE: ');'
