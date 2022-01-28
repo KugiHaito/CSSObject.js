@@ -1,13 +1,18 @@
 # Changelog
 CSSObject.js: A parser CSS in javascript vanilla
 
-## [Unreleased]
+
+## [1.4.3] - 2021-01-28
 
 ### Changed
-- file `cssobject.js` to ES5 bundle
+- ES5 support to bundle file
+- Selector key TagSelector to HTMLSelector
 
 ### Added
 - Support to many comments in one line
+
+### Fixed
+- Rule empty properties, values and functions
 
 
 ## [1.4.2] - 2021-09-12
