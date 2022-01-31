@@ -1,6 +1,13 @@
 # Changelog
 CSSObject.js: A parser CSS in javascript vanilla
 
+## [1.5.0] - 2021-01-31
+
+## Added
+- Support to multiples pseudos
+- Pseudo values to parameters
+- Rule unit values
+
 
 ## [1.4.3] - 2021-01-28
 
