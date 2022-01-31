@@ -1,4 +1,5 @@
 import ICSS from "../enums/ICSS.js"
+import IUnit from "../enums/IUnit.js"
 import FunctionRule from "./FunctionRule.js"
 
 
@@ -27,7 +28,7 @@ class Rule {
     set rule(value) {
         let [ prop, val ] = value
         this.property = prop
-        this.value = this.values(val)
+        this.value = this.__values(val)
     }
 
     /**
@@ -48,23 +49,24 @@ class Rule {
         this.property = property
     }
 
-
     /**
      * get values of rule property
      * @param {string} values
      * @returns string[]
      */
-    values(values) {
+    __values(values) {
         if (values.includes(ICSS.BRACKET.BEGIN)) {
             let params = this.__bracketParams(values)
+            this.setUnit(values.replace(`(${params})`, ''))
             let val = params.reduce((a, p, i) => a.replace(`(${p})`, `#${i}`), values)
-            let v = val.split(val.includes(ICSS.COMMA)? ICSS.COMMA:" ")
+            let vals = val.split(val.includes(ICSS.COMMA)? ICSS.COMMA:" ")
 
-            return params.reduce((a, p, i) => a.replace(`#${i}`, `(${p})`), v.join('|'))
+            return params
+                .reduce((a, p, i) => a.replace(`#${i}`, `(${p})`), vals.join('|'))
                 .split('|').map(v => this.value(v.trim()))
         }
 
-        return this.value(values)
+        return this.setUnit(this.value(values))
     }
 
     /**
@@ -73,27 +75,75 @@ class Rule {
      */
     value(values) {
         if (this.__bracketParams(values).length > 1)
-            return this.values(values)
+            return this.__values(values)
 
-         if (values.includes(ICSS.BRACKET.END)) {
+        if (values.includes(ICSS.BRACKET.END)) {
             let val = values.replace(/[)]/g, '')
             let [ name, value ] = val.split(/\((.+)/).map(v => v.trim())
             value = this.important(value)
                 .split(!value.startsWith(ICSS.DATA_URI.KEY) && value.includes(ICSS.COMMA) ? ICSS.COMMA:" ")
                 .filter(v => v != ICSS.EMPTY).map(v => v.trim())
 
-            return new FunctionRule(name, value)
-        }
+        return new FunctionRule(name, value)
+    }
 
         let val = this.important(values).split(ICSS.COMMA).map(v => v.trim())
         return val.length > 1 ? val:val.pop()
     }
 
+    /**
+     * trait unit value
+     * @param {string} values
+     * @property unit
+     * @returns number | string
+     */
+     setUnit(values) {
+        if (Array.isArray(values)) {
+            let v = []
+            values.map(values => {
+                this.setUnit(values)
+                v.push(this.__values)
+            })
+
+            this.values = v
+        } else {
+            this.values = values.split(' ').map(v => {
+                let value = parseFloat(v) ? parseFloat(v) : v == "0" ? 0 : v,
+                    unit = value == NaN ? IUnit.NO_UNIT : this.unity(v)
+
+                return { value, unit }
+            })
+        }
+
+        return values
+    }
+
+    /**
+     * has important declaration
+     * @param {string} value
+     * @property isImportant
+     * @returns string
+     */
     important(value) {
         let i = value.split(ICSS.IMPORTANT)
         this.isImportant = (i.length > 1)? true:false
 
         return (this.isImportant)? i.shift().trim():value
+    }
+
+    /**
+     * set property unit
+     * @property unit
+     * @param {string} value
+     */
+     unity(value) {
+        let u = value.replace(/[0-9]/g, ''),
+            unity = IUnit.NO_UNIT;
+        Object.entries(IUnit).map(([name, unit]) => {
+            if (unit == u) unity = name
+        })
+
+        return unity
     }
 
     /**
