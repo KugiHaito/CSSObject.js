@@ -242,6 +242,7 @@ CommentBlock:
 Rule:
   property: string
   value: string | string[] | FunctionRule
+  values: object[] # ex.: "10px" => [{value: 10, unit: "PIXELS"}]
   prop: string # alias to `property`
   isImportant: boolean
 ```
@@ -310,7 +311,7 @@ QuerieRule:
 ```yml
 Selector:
   name: string
-  type: 'UniversalSelector' | 'IDSelector' | 'ClassSelector' | 'AttrSelector' | 'PseudoSelector' | 'TagSelector'
+  type: 'UniversalSelector' | 'IDSelector' | 'ClassSelector' | 'AttrSelector' | 'PseudoSelector' | 'HTMLSelector'
   hasCombiner: boolean
   pseudo?: Pseudo # has if `hasCombiner` is `false`
   selectors?: Selector[] # has if `hasCombiner` is `true`
@@ -321,6 +322,7 @@ Selector:
 Selector:
   name: string
   type: 'PseudoClass' | 'PseudoElement' | 'PseudoEvent'
+  value?: string # has if pseudo contains parameters
 ```
 _the type **PseudoEvent** is a custom support of CSSObject not has on CSS language_
 
