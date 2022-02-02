@@ -1,6 +1,11 @@
 # Changelog
 CSSObject.js: A parser CSS in javascript vanilla
 
+## [1.6.1] - 2021-02-02
+
+## Added
+- Change static method
+
 ## [1.6.0] - 2021-02-01
 
 ## Added
