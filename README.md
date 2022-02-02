@@ -52,6 +52,12 @@ cssobj.external(style => {
     // parsed external style!
     console.log(style)
 })
+
+// static stylesheet
+cssobj.static(".blob { background-color: #d7d7d7; }", style => {
+  // parsed static style
+  console.log(style)
+})
 ```
 
 or use alias `CSSObj` to **CSSObject** instance:
@@ -60,6 +66,7 @@ or use alias `CSSObj` to **CSSObject** instance:
 CSSObj.options({load_min: false})
   .local(style => console.log(style))
   .external(style => console.log(style))
+  .static(".blob { background-color: #d7d7d7; }", style => console.log(style))
 ```
 
 <!-- Usage with full code -->
@@ -147,6 +154,7 @@ CSSObject:
     IMedia.js
     ISelector.js
     IPseudo.js
+    IUnit.js
   parser: # files responsible for data processing
     BlocksParser.js
     CommentBlock.js
@@ -198,6 +206,7 @@ See below, the objects and their properties that are returned
 ```yml
 CSSObject:
   options(options: object)
+  static(text: string, callback: function)
   local(callback: function, all: boolean?)
   external(callback: function) # callback in promise
 
@@ -212,6 +221,7 @@ Stylesheet:
   comments: CommentBlock[]
   blocks: BlockRule[]
   variables: VariableRule[]
+  filename: string | null
   statments: {
     charsets: CharsetRule[],
     imports: ImportRule[],
