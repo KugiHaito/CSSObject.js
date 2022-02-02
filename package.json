@@ -1,6 +1,6 @@
 {
     "name": "cssobjectjs",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": "A Parser CSS in Javascript Vanilla",
     "keywords": [
         "css-parse",
