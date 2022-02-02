@@ -51,12 +51,14 @@ import Stylesheet from "./parser/Stylesheet.js"
 
     /**
      * get static stylesheet
-     * @param {string} string css text
+     * @param {string} text css text
      * @param {object} callback callback
      */
-    static(string, callback) {
-        let style = new Stylesheet(string)
-        return callback(style)
+    static(text, callback) {
+        let style = new Stylesheet(text)
+        if (typeof text == 'string') callback(style)
+
+        return this
     }
 
     /**
