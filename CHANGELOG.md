@@ -1,6 +1,13 @@
 # Changelog
 CSSObject.js: A parser CSS in javascript vanilla
 
+## [1.6.0] - 2021-02-01
+
+## Added
+- Add static method
+- Add support to dataset (data-name) for local stylesheets
+- options to local stylesheets (ignore_files / only_files)
+
 ## [1.5.0] - 2021-01-31
 
 ## Added
