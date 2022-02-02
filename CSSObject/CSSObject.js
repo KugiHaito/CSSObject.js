@@ -50,16 +50,30 @@ import Stylesheet from "./parser/Stylesheet.js"
     }
 
     /**
+     * get static stylesheet
+     * @param {string} string css text
+     * @param {object} callback callback
+     */
+    static(string, callback) {
+        let style = new Stylesheet(string)
+        return callback(style)
+    }
+
+    /**
      * get local stylesheets
      * @param {object} callback callback function
      * @param {boolean} all return all stylesheets in callback
      */
     local(callback, all = false) {
         let styles = []
-        Object.values(document.styleSheets).forEach(sheet => {
+        Object.values(document.styleSheets).forEach((sheet, index) => {
             if (sheet.ownerNode != null || sheet.ownerNode.childNodes.length > 0)
                 if (sheet.ownerNode.innerText != "") {
-                    let style = new Stylesheet(sheet.ownerNode.innerText)
+                    let filename = sheet.ownerNode.dataset.name || null
+                    if (this._options.only_files.length == 0 && this._options.ignore_files.includes(filename)) return
+                    if (this._options.only_files.length > 0 && !this._options.only_files.includes(filename)) return
+
+                    let style = new Stylesheet(sheet.ownerNode.innerText, filename)
                     all ? styles.push(style) : callback(style)
                 }
         })
