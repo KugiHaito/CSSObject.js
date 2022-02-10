@@ -56,4 +56,16 @@ describe('Test the CSSObject in external stylesheet', () => {
             }
         });
     });
+
+    it("When we call the external function without external css loaded the callback function is not called", () => {
+        window.fetch = jest.fn().mockResolvedValue({
+            text: () => Promise.resolve(''),
+        });
+        window.Object.values = jest.fn().mockReturnValue([]);
+        const cssObject = new CSSObject();
+        cssObject.external(() => {
+            expect(true).toBe(false);
+        });
+        expect(window.fetch).toHaveBeenCalledTimes(0);
+    });
 });
