@@ -21,4 +21,12 @@ describe('Test the CSSObject in local stylesheet', () => {
             expect(style).toEqual(localExpected);
         });
     });
+
+    it("When we call the local function without local css loaded the callback function is not called", () => {
+        window.Object.values = jest.fn().mockReturnValue([]);
+        const cssObject = new CSSObject();
+        cssObject.local(() => {
+            expect(true).toBe(false);
+        });
+    });
 });
