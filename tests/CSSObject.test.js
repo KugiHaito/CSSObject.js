@@ -1,5 +1,5 @@
 import CSSObject from '../CSSObject/CSSObject';
-import { localExpected } from './CSSObjectExpected';
+import { localExpected, externalExpected } from './CSSObjectExpected';
 
 describe('Test the CSSObject in local stylesheet', () => {
     afterEach(() => {
@@ -27,6 +27,33 @@ describe('Test the CSSObject in local stylesheet', () => {
         const cssObject = new CSSObject();
         cssObject.local(() => {
             expect(true).toBe(false);
+        });
+    });
+});
+
+describe('Test the CSSObject in external stylesheet', () => {
+    it('When we call the external function with external css loaded will receive the right return', done => {
+        window.fetch = jest.fn().mockResolvedValue({
+            text: () => Promise.resolve(externalExpected.css),
+        });
+        window.Object.values = jest.fn().mockReturnValue([
+            {
+                ownerNode: {
+                    nodeName: 'LINK',
+                },
+                href: 'https://example.com/style.css',
+            },
+        ]);
+        const cssObject = new CSSObject();
+        cssObject.external((style) => {
+            try {
+                expect(window.fetch).toHaveBeenCalledTimes(1);
+                expect(window.fetch).toHaveBeenCalledWith('https://example.com/style.css');
+                expect(style).toEqual(externalExpected);
+                done();
+            } catch (error) {
+                done(error);
+            }
         });
     });
 });
